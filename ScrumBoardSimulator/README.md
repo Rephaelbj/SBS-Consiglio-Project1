@@ -42,4 +42,3 @@ All rights reserved at this point. Have not decided what to do with this yet.
 ## Authors
 Max Wenzin & Oscar Lantz
 
-#check tiaga git integrations
