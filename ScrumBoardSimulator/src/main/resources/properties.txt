@@ -1,0 +1,12 @@
+//For audio options put "mute" for the option else use the commented code.
+//Make sure custom audio is in the same directory as the properties.txt file and names correctly
+Audio: mute
+
+//Audio: custom
+//working: workingNoise.mp3
+//complete: completeNoise.mp3
+
+//For color options pick "default", "red", "green", "blue", or any hexidecimal rgb value
+TaskColor: default
+WindowColor: default
+BorderColor: default

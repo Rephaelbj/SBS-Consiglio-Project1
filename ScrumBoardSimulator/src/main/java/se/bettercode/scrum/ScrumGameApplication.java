@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import se.bettercode.Main;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.Board;
@@ -15,6 +16,11 @@ import se.bettercode.scrum.gui.ToolBar;
 import se.bettercode.scrum.prefs.StageUserPrefs;
 import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class ScrumGameApplication extends Application {
@@ -41,6 +47,30 @@ public class ScrumGameApplication extends Application {
     @Override
     public void init() {
         System.out.println("Inside init()");
+        //TODO: set up the reading of a property file to change existing settings of the application
+        try{
+            BufferedReader properties = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/properties.txt")));
+            for(String option = ""; option != null; option = properties.readLine()){
+                if(!option.contains("//") && !option.equals("")){
+                    if(option.contains("Audio")){
+                        String audioSetting = option.substring(7);
+                        System.out.println(audioSetting);
+                    }else if(option.contains("TaskColor")){
+                        String taskSetting = option.substring(11);
+                        System.out.println(taskSetting);
+                    }else if(option.contains("WindowColor")){
+                        String windowSetting = option.substring(13);
+                        System.out.println(windowSetting);
+                    }else if(option.contains("BorderColor")){
+                        String windowSetting = option.substring(13);
+                        System.out.println(windowSetting);
+                    }
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+
     }
 
     @Override
