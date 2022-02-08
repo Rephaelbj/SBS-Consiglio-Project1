@@ -15,6 +15,9 @@ import se.bettercode.scrum.gui.ToolBar;
 import se.bettercode.scrum.prefs.StageUserPrefs;
 import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
+import se.bettercode.taiga.TaigaContainer;
+
+import java.io.IOException;
 
 
 public class ScrumGameApplication extends Application {
@@ -52,6 +55,15 @@ public class ScrumGameApplication extends Application {
         setStage();
         bindActionsToToolBar();
         primaryStage.show();
+        TaigaContainer taiga = new TaigaContainer();
+        try {
+            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
+            taiga.setProject("rbjacks3-ser515-groupproject-7");
+        }
+        catch(IOException e)
+        {
+
+        }
     }
 
     private void setStage() {
