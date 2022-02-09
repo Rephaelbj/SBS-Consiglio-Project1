@@ -24,10 +24,10 @@ The application is built using JavaFX.
 * Maven 3
 
 ## How to build & run tests
-* ```mvn clean install```
+* ```mvn clean package install```
 
 ## How to run
-* Launching jar from command line: ```java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT.jar```
+* Launching jar from command line: ```java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar```
 
 ## Continuous Integration
 [http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/](http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/)
