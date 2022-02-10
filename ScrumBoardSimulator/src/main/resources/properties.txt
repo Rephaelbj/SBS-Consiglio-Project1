@@ -7,6 +7,6 @@ Audio: mute
 //complete: completeNoise.mp3
 
 //For color options pick "default", "red", "green", "blue", or any hexidecimal rgb value
-TaskColor: default
+TaskColor: ffc0cb
 WindowColor: default
 BorderColor: default
