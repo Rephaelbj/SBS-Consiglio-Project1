@@ -12,13 +12,17 @@ import org.json.JSONObject;
 
 public class TaigaContainer {
 	
-	ArrayList<String> people;
 	String url;
 	String baseURL = "https://api.taiga.io/api/v1/";
 	String authorize_token = "";
+	String projectId = "";
 
 	// Json Objects:
 	JSONObject currentProject = new JSONObject();
+	JSONArray epics = new JSONArray();
+	JSONArray stories = new JSONArray();
+	JSONArray tasks = new JSONArray();
+	JSONArray people = new JSONArray();
 	
 	
 	public TaigaContainer()
@@ -30,12 +34,10 @@ public class TaigaContainer {
 	// Get Token
 	public void getData() throws IOException
 	{
-		authorize();
-//		URL url = new URL("https://api.taiga.io/api/v1/application-tokens/authorize");
-//		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//		connection.setRequestMethod("POST");
-//		int responseCode = connection.getResponseCode();
-		
+		getEpics();
+		getStories();
+		getTask();
+		getTeamMembers();
 	}
 	
 	/**
@@ -116,10 +118,113 @@ public class TaigaContainer {
 				}
 				System.out.println(response.toString());
 				currentProject = new JSONObject(response.toString());
+				projectId = String.valueOf(currentProject.getInt("id"));
 			}
 		}
 	}
-	
+
+	private void getEpics() throws IOException {
+		System.out.println("EPICS");
+		URL url = new URL(baseURL + "epics?project=" + projectId);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+		connection.setRequestProperty("Authorization", "Bearer " + authorize_token);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestMethod("GET");
+
+		if(connection.getResponseCode() == 200)
+		{
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				System.out.println(response.toString());
+				epics = new JSONArray(response.toString());
+			}
+		}
+	}
+
+	private void getStories() throws IOException {
+		System.out.println("Stories");
+
+		URL url = new URL(baseURL + "userstories?project=" + projectId);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+		connection.setRequestProperty("Authorization", "Bearer " + authorize_token);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestMethod("GET");
+
+		if(connection.getResponseCode() == 200)
+		{
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				System.out.println(response.toString());
+				stories = new JSONArray(response.toString());
+			}
+		}
+	}
+
+	private void getTask() throws IOException {
+		System.out.println("Tasks");
+
+		URL url = new URL(baseURL + "tasks?project=" + projectId);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+		connection.setRequestProperty("Authorization", "Bearer " + authorize_token);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestMethod("GET");
+
+		if(connection.getResponseCode() == 200)
+		{
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				System.out.println(response.toString());
+				tasks = new JSONArray(response.toString());
+			}
+		}
+	}
+
+	private void getTeamMembers() throws IOException {
+		System.out.println("Team members");
+
+		URL url = new URL(baseURL + "users?project=" + projectId);
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+		connection.setRequestProperty("Authorization", "Bearer " + authorize_token);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestMethod("GET");
+
+		if(connection.getResponseCode() == 200)
+		{
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+				StringBuilder response = new StringBuilder();
+				String responseLine = null;
+				while ((responseLine = br.readLine()) != null) {
+					response.append(responseLine.trim());
+				}
+				System.out.println(response.toString());
+				people = new JSONArray(response.toString());
+			}
+		}
+	}
 	
 	
 

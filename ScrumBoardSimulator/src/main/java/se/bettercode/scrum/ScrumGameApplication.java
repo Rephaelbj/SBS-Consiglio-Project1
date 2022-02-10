@@ -89,10 +89,11 @@ public class ScrumGameApplication extends Application {
         try {
             taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
             taiga.setProject("rbjacks3-ser515-groupproject-7");
+            taiga.getData();
         }
         catch(IOException e)
         {
-
+            System.out.println("OH NO");
         }
     }
 
