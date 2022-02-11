@@ -20,7 +20,7 @@ public class ToolBar extends HBox {
 
     private Button burnUpChartButton = new Button("Burn Up Chart");
 
-    public ToolBar(String[] teams, String[] backlogs, String[] charts) {
+    public ToolBar(String[] teams, String[] backlogs) {
         setPadding(new Insets(15, 12, 15, 12));
         setSpacing(10);
         setStyle("-fx-background-color: #336699;");
@@ -30,9 +30,6 @@ public class ToolBar extends HBox {
 
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
-
-        burnChartChoiceBox.setItems(FXCollections.observableArrayList(charts));
-        burnChartChoiceBox.setTooltip(new Tooltip("Select Chart Type"));
 
         burnUpChartButton.setPrefSize(150, 20);
 

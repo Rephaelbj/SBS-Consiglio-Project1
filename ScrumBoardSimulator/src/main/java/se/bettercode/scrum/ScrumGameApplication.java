@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-import java.awt.*;
 
 
 public class ScrumGameApplication extends Application {
@@ -36,9 +35,8 @@ public class ScrumGameApplication extends Application {
     private String chart;
     private StatusBar statusBar = new StatusBar();
     private SelectableBacklogs backlogs = new SelectableBacklogs();
-    private SelectableCharts charts = new SelectableCharts();
     private SelectableTeams teams = new SelectableTeams();
-    private ToolBar toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys(), charts.getKeys());
+    private ToolBar toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
     private BurnupChart burnupChart = getNewBurnupChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
@@ -108,7 +106,6 @@ public class ScrumGameApplication extends Application {
         BorderPane borderPane = new BorderPane();
         board.prefWidthProperty().bind(primaryStage.widthProperty());
         borderPane.setCenter(board);
-//        borderPane.setRight(burnupChart);
         borderPane.setTop(toolBar);
         borderPane.setBottom(statusBar);
         primaryStage.setScene(new Scene(borderPane, 800, 600));
@@ -152,17 +149,8 @@ public class ScrumGameApplication extends Application {
             }
         };
 
-        ChangeListener chartChoiceBoxListener = new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-                chart = charts.get(newValue.toString());
-                loadData();
-            }
-        };
-
         toolBar.setTeamChoiceBoxListener(teamChoiceBoxListener);
         toolBar.setBacklogChoiceBoxListener(backlogChoiceBoxListener);
-        toolBar.setChartChoiceBoxListener(chartChoiceBoxListener);
         toolBar.setBurnUpButtonAction((event) -> ChartWindow.display(burnupChart));
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
     }
