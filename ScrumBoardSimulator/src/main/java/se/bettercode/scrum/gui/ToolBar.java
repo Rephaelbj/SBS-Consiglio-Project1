@@ -16,8 +16,11 @@ public class ToolBar extends HBox {
     private final Button startButton = new Button("Start Sprint");
     private ChoiceBox<String> teamChoiceBox = new ChoiceBox<>();
     private ChoiceBox<String> backlogChoiceBox = new ChoiceBox<>();
+    private ChoiceBox<String> burnChartChoiceBox = new ChoiceBox<>();
 
-    public ToolBar(String[] teams, String[] backlogs) {
+    private Button burnUpChartButton = new Button("Burn Up Chart");
+
+    public ToolBar(String[] teams, String[] backlogs, String[] charts) {
         setPadding(new Insets(15, 12, 15, 12));
         setSpacing(10);
         setStyle("-fx-background-color: #336699;");
@@ -28,9 +31,18 @@ public class ToolBar extends HBox {
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
 
+        burnChartChoiceBox.setItems(FXCollections.observableArrayList(charts));
+        burnChartChoiceBox.setTooltip(new Tooltip("Select Chart Type"));
+
+        burnUpChartButton.setPrefSize(150, 20);
+
         startButton.setPrefSize(100, 20);
 
-        getChildren().addAll(teamChoiceBox, backlogChoiceBox, startButton);
+        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton);
+    }
+
+    public void setBurnUpButtonAction(EventHandler<ActionEvent> eventHandler) {
+        burnUpChartButton.setOnAction(eventHandler);
     }
 
     public void setStartButtonAction(EventHandler<ActionEvent> eventHandler) {
@@ -40,6 +52,7 @@ public class ToolBar extends HBox {
     public void bindRunningProperty(BooleanProperty booleanProperty) {
         teamChoiceBox.disableProperty().bind(booleanProperty);
         backlogChoiceBox.disableProperty().bind(booleanProperty);
+        burnChartChoiceBox.disableProperty().bind(booleanProperty);
         startButton.disableProperty().bind(booleanProperty);
     }
 
@@ -51,5 +64,8 @@ public class ToolBar extends HBox {
         backlogChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeListener);
     }
 
+    public void setChartChoiceBoxListener(ChangeListener<String> changeListener) {
+        burnChartChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeListener);
+    }
 
 }
