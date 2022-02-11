@@ -8,6 +8,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.team.Team;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Sprint {
 
     public static final int SLEEP_MILLIS = 500;
@@ -73,6 +77,10 @@ public class Sprint {
         System.out.println("Total backlog size is " + backlog.getTotalPoints() + " points.");
         System.out.println("Burning through backlog at " + dailyBurn + " points per day.");
 
+        DateFormat dateFormat = new SimpleDateFormat("MMM/dd/yyyy");
+        Calendar cal = Calendar.getInstance();
+
+
         new Thread() {
 
             @Override
@@ -80,7 +88,11 @@ public class Sprint {
                 setRunning(true);
                 for (int day=0; day<=lengthInDays.get(); day++) {
                     setCurrentDay(day);
-                    System.out.println("Day " + day + ": " + backlog.getFinishedStoriesCount() + " finished stories in total.");
+                    System.out.println(dateFormat.format(cal.getTime()) + ": " + backlog.getFinishedStoriesCount() + " finished stories in total.");
+
+                    cal.add(Calendar.DATE, 1);
+                    dateFormat.format(cal.getTime());
+
                     backlog.runDay(dailyBurn, day);
                     sleepThread();
                     if (backlog.isFinished()) {
