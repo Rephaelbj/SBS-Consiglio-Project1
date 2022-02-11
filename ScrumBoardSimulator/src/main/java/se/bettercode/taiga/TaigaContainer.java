@@ -63,9 +63,6 @@ public class TaigaContainer {
 			os.write(input, 0, input.length);
 		}
 
-		System.out.println("Code is");
-		System.out.println(connection.getResponseCode());
-		System.out.println("DONE");
 		if(connection.getResponseCode() == 200)
 		{
 			try(BufferedReader br = new BufferedReader(
@@ -75,9 +72,7 @@ public class TaigaContainer {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				System.out.println(response.toString());
 				JSONObject loginObject = new JSONObject(response.toString());
-				System.out.println(loginObject.getString("auth_token"));
 				authorize_token = loginObject.getString("auth_token");
 
 
@@ -116,7 +111,6 @@ public class TaigaContainer {
 				while ((responseLine = br.readLine()) != null) {
 					response.append(responseLine.trim());
 				}
-				System.out.println(response.toString());
 				currentProject = new JSONObject(response.toString());
 				projectId = String.valueOf(currentProject.getInt("id"));
 			}
