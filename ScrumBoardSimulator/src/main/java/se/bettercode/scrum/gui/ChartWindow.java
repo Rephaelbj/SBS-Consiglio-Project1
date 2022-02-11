@@ -13,7 +13,6 @@ public class ChartWindow {
 
     public static void display(BurnupChart burnupChart) {
         Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Burn Up Chart");
         window.setMinWidth(500);
 
