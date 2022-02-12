@@ -9,6 +9,7 @@ import se.bettercode.scrum.team.Team;
 public class Main {
 
     public static void main(String[] args) {
+
         System.out.println("Starting command line app.");
         Team team = new CobraTeam();
         Backlog backlog = new SmallBacklog();
