@@ -3,6 +3,10 @@ package se.bettercode.scrum;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -93,15 +97,15 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         primaryStage.show();
         TaigaContainer taiga = new TaigaContainer();
-        try {
-            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
-            taiga.setProject("rbjacks3-ser515-groupproject-7");
-            taiga.getData();
-        }
-        catch(IOException e)
-        {
-            System.out.println("OH NO");
-        }
+//        try {
+//            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
+//            taiga.setProject("rbjacks3-ser515-groupproject-7");
+//            taiga.getData();
+//        }
+//        catch(IOException e)
+//        {
+//            System.out.println("OH NO");
+//        }
     }
 
     private void setStage() {
@@ -147,6 +151,21 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu strategyMenu = new Menu("Strategy");
         MenuItem sItem1 = new MenuItem("New");
+        sItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStrategyWindow newStrategyWindow = new NewStrategyWindow();
+                newStrategyWindow.setAlignment(Pos.CENTER);
+                newStrategyWindow.setHgap(10);
+                newStrategyWindow.setVgap(10);
+                Scene scene = new Scene(newStrategyWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Strategy");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
         strategyMenu.getItems().addAll(sItem1,sItem2,sItem3);
