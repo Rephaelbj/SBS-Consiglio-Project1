@@ -3,7 +3,14 @@ package se.bettercode.scrum;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import se.bettercode.Main;
@@ -90,27 +97,92 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         primaryStage.show();
         TaigaContainer taiga = new TaigaContainer();
-        try {
-            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
-            taiga.setProject("rbjacks3-ser515-groupproject-7");
-            taiga.getData();
-        }
-        catch(IOException e)
-        {
-            System.out.println("OH NO");
-        }
+//        try {
+//            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
+//            taiga.setProject("rbjacks3-ser515-groupproject-7");
+//            taiga.getData();
+//        }
+//        catch(IOException e)
+//        {
+//            System.out.println("OH NO");
+//        }
     }
 
     private void setStage() {
         primaryStage.setTitle("Scrum Game");
+        //Adding all the menu items to the menu
         BorderPane borderPane = new BorderPane();
+
+        BorderPane topPane = new BorderPane();
+        topPane.setTop(makeMenus());
+        topPane.setCenter(toolBar);
+
+
+        borderPane.setTop(topPane);
+        //borderPane.setTop(menuBar);
         board.prefWidthProperty().bind(primaryStage.widthProperty());
+
         borderPane.setCenter(board);
-        borderPane.setTop(toolBar);
         borderPane.setBottom(statusBar);
         primaryStage.setScene(new Scene(borderPane, 800, 600));
     }
 
+
+    private MenuBar makeMenus()
+    {
+        // File menu
+        Menu fileMenu = new Menu("File");
+        MenuItem fItem1 = new MenuItem("Save");
+        MenuItem fItem2 = new MenuItem("Load");
+        MenuItem fItem3 = new MenuItem("Import from Taiga");
+        MenuItem fItem4 = new MenuItem("Export to Taiga");
+        MenuItem fItem5 = new MenuItem("Settings");
+        MenuItem fItem6 = new MenuItem("Exit");
+        fileMenu.getItems().addAll(fItem1,fItem2,fItem3,fItem4,fItem5,fItem6);
+
+        // Team menu
+        //Strategy menu
+        Menu teamMenu = new Menu("Team");
+        MenuItem tItem1 = new MenuItem("New");
+        MenuItem tItem2 = new MenuItem("Edit");
+        MenuItem tItem3 = new MenuItem("Delete");
+        teamMenu.getItems().addAll(tItem1,tItem2,tItem3);
+
+        //Strategy menu
+        Menu strategyMenu = new Menu("Strategy");
+        MenuItem sItem1 = new MenuItem("New");
+        sItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStrategyWindow newStrategyWindow = new NewStrategyWindow();
+                newStrategyWindow.setAlignment(Pos.CENTER);
+                newStrategyWindow.setHgap(10);
+                newStrategyWindow.setVgap(10);
+                Scene scene = new Scene(newStrategyWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Strategy");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
+        MenuItem sItem2 = new MenuItem("Edit");
+        MenuItem sItem3 = new MenuItem("Delete");
+        strategyMenu.getItems().addAll(sItem1,sItem2,sItem3);
+
+
+        MenuBar menuBar = new MenuBar();
+
+        // Add menus
+        menuBar.getMenus().add(fileMenu);
+        menuBar.getMenus().add(teamMenu);
+        menuBar.getMenus().add(strategyMenu);
+
+
+
+        return menuBar;
+
+    }
     private boolean initSprint() {
         if (team != null && backlog != null) {
             sprint = new Sprint("First sprint", SPRINT_LENGTH_IN_DAYS, team, backlog);
