@@ -11,6 +11,7 @@ import se.bettercode.scrum.team.Team;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 public class Sprint {
 
@@ -88,7 +89,34 @@ public class Sprint {
                 setRunning(true);
                 for (int day=0; day<=lengthInDays.get(); day++) {
                     setCurrentDay(day);
-                    System.out.println(dateFormat.format(cal.getTime()) + ": " + backlog.getFinishedStoriesCount() + " finished stories in total.");
+
+                    // Happiness Value
+                    String happiness_value;
+                    Random random = new Random();
+                    int rand = 0;
+                    while (true){
+                        rand = random.nextInt(5);
+                        if(rand !=0) break;
+                    }
+                    switch (rand){
+                        case 1:
+                            happiness_value = "sad";
+                            break;
+                        case 2:
+                            happiness_value = "mad";
+                            break;
+                        case 3:
+                            happiness_value = "confused";
+                            break;
+                        case 4:
+                            happiness_value = "happy";
+                            break;
+                        default:
+                            happiness_value = "Neutral";
+                            break;
+                    }
+
+                    System.out.println(dateFormat.format(cal.getTime()) + ": " + backlog.getFinishedStoriesCount() + " finished stories in total. Happiness Value: " + happiness_value);
 
                     cal.add(Calendar.DATE, 1);
                     dateFormat.format(cal.getTime());
