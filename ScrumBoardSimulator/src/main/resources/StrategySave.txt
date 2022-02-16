@@ -1,0 +1,16 @@
+Custom Sliced
+10
+5
+2
+Weird Sliced
+100
+3
+
+fun Sliced
+10
+1
+10
+Too Much Work
+2000
+30
+2
