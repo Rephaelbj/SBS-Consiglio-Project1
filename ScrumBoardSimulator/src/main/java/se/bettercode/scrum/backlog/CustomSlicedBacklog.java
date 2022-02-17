@@ -24,6 +24,9 @@ public class CustomSlicedBacklog extends Backlog {
     public void setPointCount(int parseInt) {
         pointCount = parseInt;
     }
+    public int getPointCount(){
+        return pointCount;
+    }
     public void init(){
         ArrayList<String> storyTitles = (new RandomStoryTitleGenerator()).generate(storyCount);
         for(int i = 0; i < storyCount; i++){
@@ -33,5 +36,8 @@ public class CustomSlicedBacklog extends Backlog {
 
     public void setPointsPerStory(int parseInt) {
         pointsPerStory = parseInt;
+    }
+    public int getPointsPerStory() {
+        return pointsPerStory;
     }
 }

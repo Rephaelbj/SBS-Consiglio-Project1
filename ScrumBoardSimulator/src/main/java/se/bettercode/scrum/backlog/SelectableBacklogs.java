@@ -18,7 +18,6 @@ public class SelectableBacklogs extends Selectable<Backlog> {
         put(wellSlicedBacklog.getName(), wellSlicedBacklog);
         put(poorlySlicedBacklog.getName(), poorlySlicedBacklog);
     }
-
     private ArrayList<Backlog> loadBacklogs() {
         ArrayList<Backlog> create = new ArrayList<Backlog>();
         try {
@@ -27,7 +26,6 @@ public class SelectableBacklogs extends Selectable<Backlog> {
             int count = 0;
             for (String option = ""; option != null; option = properties.readLine()) {
                 if(option.length()>=1){
-                    System.out.println(option);
                     if(count < 4){
                         if(count == 0){
                             item.setName(option);

@@ -155,7 +155,8 @@ public class ScrumGameApplication extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Stage stage = new Stage();
-                NewStrategyWindow newStrategyWindow = new NewStrategyWindow();
+                NewStrategyWindow newStrategyWindow = new NewStrategyWindow(backlogs);
+                newStrategyWindow.setStage(stage);
                 newStrategyWindow.setAlignment(Pos.CENTER);
                 newStrategyWindow.setHgap(10);
                 newStrategyWindow.setVgap(10);
@@ -164,6 +165,10 @@ public class ScrumGameApplication extends Application {
                 stage.setTitle("New Strategy");
                 stage.setResizable(false);
                 stage.show();
+                stage.setOnCloseRequest(e -> {
+                    toolBar.setStrategies(backlogs.getKeys());
+                });
+
             }
         });
         MenuItem sItem2 = new MenuItem("Edit");

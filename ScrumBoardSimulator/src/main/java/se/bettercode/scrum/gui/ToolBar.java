@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import se.bettercode.scrum.backlog.SelectableBacklogs;
 
 public class ToolBar extends HBox {
 
@@ -27,15 +28,18 @@ public class ToolBar extends HBox {
 
         teamChoiceBox.setItems(FXCollections.observableArrayList(teams));
         teamChoiceBox.setTooltip(new Tooltip("Select team"));
+        teamChoiceBox.setPrefWidth(100);
 
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
+        backlogChoiceBox.setPrefWidth(100);
 
         burnUpChartButton.setPrefSize(150, 20);
 
         startButton.setPrefSize(100, 20);
 
         getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton);
+
     }
 
     public void setBurnUpButtonAction(EventHandler<ActionEvent> eventHandler) {
@@ -65,4 +69,8 @@ public class ToolBar extends HBox {
         burnChartChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeListener);
     }
 
+    public void setStrategies(String[] backlogs) {
+        System.out.println("test");
+        backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
+    }
 }
