@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class ChartWindow {
 
-    public static void display(BurnupChart burnupChart) {
+    public static void displayBurnUpChart(BurnupChart burnupChart) {
         Stage window = new Stage();
         window.setTitle("Burn Up Chart");
         window.setMinWidth(500);
@@ -23,6 +23,37 @@ public class ChartWindow {
         layout.getChildren().addAll(burnupChart, closeButton);
         layout.setAlignment(Pos.CENTER);
 
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+    }
+
+    public static void displayBurnDownChart(BurnDownChart burnDownChart) {
+        Stage window = new Stage();
+        window.setTitle("Burn Down Chart");
+        window.setMinWidth(500);
+
+        Button closeButton = new Button("Close the Window");
+        closeButton.setOnAction( e -> window.close());
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(burnDownChart, closeButton);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        window.setScene(scene);
+        window.showAndWait();
+    }
+
+    private static void display(VBox layout, String windowTitle) {
+        Stage window = new Stage();
+        window.setTitle(windowTitle);
+        window.setMinWidth(500);
+        Button closeButton = new Button("Close the Window");
+        closeButton.setOnAction( e -> window.close());
+
+        layout.getChildren().add(closeButton);
+        layout.setAlignment(Pos.CENTER);
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();

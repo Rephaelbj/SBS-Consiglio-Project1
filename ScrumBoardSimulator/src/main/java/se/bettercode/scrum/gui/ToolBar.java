@@ -19,6 +19,7 @@ public class ToolBar extends HBox {
     private ChoiceBox<String> burnChartChoiceBox = new ChoiceBox<>();
 
     private Button burnUpChartButton = new Button("Burn Up Chart");
+    private Button burnDownChatButton = new Button("Burn Down Chart");
 
     public ToolBar(String[] teams, String[] backlogs) {
         setPadding(new Insets(15, 12, 15, 12));
@@ -32,14 +33,19 @@ public class ToolBar extends HBox {
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
 
         burnUpChartButton.setPrefSize(150, 20);
+        burnDownChatButton.setPrefSize(150, 20);
 
         startButton.setPrefSize(100, 20);
 
-        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton);
+        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, burnDownChatButton, startButton);
     }
 
     public void setBurnUpButtonAction(EventHandler<ActionEvent> eventHandler) {
         burnUpChartButton.setOnAction(eventHandler);
+    }
+
+    public void setBurnDownChatButtonButtonAction(EventHandler<ActionEvent> eventHandler) {
+        burnDownChatButton.setOnAction(eventHandler);
     }
 
     public void setStartButtonAction(EventHandler<ActionEvent> eventHandler) {

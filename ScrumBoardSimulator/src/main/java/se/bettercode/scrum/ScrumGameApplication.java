@@ -9,7 +9,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import se.bettercode.Main;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.*;
@@ -21,10 +20,7 @@ import se.bettercode.taiga.TaigaContainer;
 import java.io.IOException;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Scanner;
-
 
 
 public class ScrumGameApplication extends Application {
@@ -41,6 +37,7 @@ public class ScrumGameApplication extends Application {
     private SelectableTeams teams = new SelectableTeams();
     private ToolBar toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
     private BurnupChart burnupChart = getNewBurnupChart();
+    private BurnDownChart burnDownChart = getBurnDownChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
     
@@ -159,8 +156,6 @@ public class ScrumGameApplication extends Application {
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
 
-
-
         return menuBar;
 
     }
@@ -169,7 +164,9 @@ public class ScrumGameApplication extends Application {
             sprint = new Sprint("First sprint", SPRINT_LENGTH_IN_DAYS, team, backlog);
             board.bindBacklog(backlog);
             burnupChart.removeAllData();
+            burnDownChart.removeAllData();
             burnupChart.bindBurnupDaysProperty(backlog.getBurnup().burnupDaysProperty());
+            burnDownChart.bindBurnDownDaysProperty(backlog.getBurnDown().burnDownDaysProperty());
             toolBar.bindRunningProperty(sprint.runningProperty());
             return true;
         }
@@ -204,7 +201,8 @@ public class ScrumGameApplication extends Application {
 
         toolBar.setTeamChoiceBoxListener(teamChoiceBoxListener);
         toolBar.setBacklogChoiceBoxListener(backlogChoiceBoxListener);
-        toolBar.setBurnUpButtonAction((event) -> ChartWindow.display(burnupChart));
+        toolBar.setBurnUpButtonAction((event) -> ChartWindow.displayBurnUpChart(burnupChart));
+        toolBar.setBurnDownChatButtonButtonAction((event) -> ChartWindow.displayBurnDownChart(burnDownChart));
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
     }
 
@@ -221,5 +219,9 @@ public class ScrumGameApplication extends Application {
 
     private BurnupChart getNewBurnupChart() {
         return new BurnupChart(SPRINT_LENGTH_IN_DAYS);
+    }
+
+    private BurnDownChart getBurnDownChart() {
+        return new BurnDownChart();
     }
 }

@@ -19,7 +19,8 @@ public class Backlog {
     IntegerProperty donePoints = new SimpleIntegerProperty(0);
     private DoubleProperty averageLeadTime = new SimpleDoubleProperty();
 
-    private BacklogBurnup burnup = new BacklogBurnup();
+    private BacklogBurnChart burnup = new BacklogBurnChart();
+    private BacklogBurnChart burnDown = new BacklogBurnChart();
 
     protected Backlog(String name) {
         this.name = name;
@@ -110,10 +111,16 @@ public class Backlog {
         setFinishedPoints();
         setAverageLeadTime();
         addBurnupDay(day);
+        addBornDownDay(day);
     }
 
     private BurnupDay makeBurnupDay(int day) {
         return new BurnupDay(day, getTotalPoints(), getDonePoints());
+    }
+
+    private BurnDownDay makeBurnDownDay(int day) {
+        System.out.println("makeBurnDownDay : " + day + " " + getTotalPoints() + " " + getDonePoints());
+        return new BurnDownDay(day, getTotalPoints(), getTotalPoints()-getDonePoints());
     }
 
     private void setAverageLeadTime() {
@@ -140,7 +147,15 @@ public class Backlog {
         Platform.runLater(() -> burnup.addDay(makeBurnupDay(day)));
     }
 
-    public BacklogBurnup getBurnup() {
+    private void addBornDownDay(int day) {
+        Platform.runLater(() -> burnDown.addBurnDownDay(makeBurnDownDay(day)));
+    }
+
+    public BacklogBurnChart getBurnup() {
         return burnup;
+    }
+
+    public BacklogBurnChart getBurnDown() {
+        return burnDown;
     }
 }

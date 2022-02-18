@@ -9,9 +9,10 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BacklogBurnup {
+public class BacklogBurnChart {
 
     ListProperty<BurnupDay> burnupDays = new SimpleListProperty<BurnupDay>(FXCollections.observableList(new ArrayList<BurnupDay>()));
+    ListProperty<BurnDownDay> burnDownDays = new SimpleListProperty<BurnDownDay>(FXCollections.observableList(new ArrayList<BurnDownDay>()));
 
     public ObservableList<BurnupDay> getBurnupDays() {
         return burnupDays.get();
@@ -20,9 +21,16 @@ public class BacklogBurnup {
     public ListProperty<BurnupDay> burnupDaysProperty() {
         return burnupDays;
     }
+    public ListProperty<BurnDownDay> burnDownDaysProperty() {
+        return burnDownDays;
+    }
 
     void addDay(BurnupDay burnupDay) {
         burnupDays.add(burnupDay);
+    }
+
+    void addBurnDownDay(BurnDownDay burnDownDay) {
+        burnDownDays.add(burnDownDay);
     }
 
 }
