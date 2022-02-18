@@ -3,13 +3,15 @@ package se.bettercode.scrum;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import se.bettercode.Main;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.*;
@@ -18,12 +20,9 @@ import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
 import se.bettercode.taiga.TaigaContainer;
 
-import java.io.IOException;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 
 
@@ -147,6 +146,26 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu strategyMenu = new Menu("Strategy");
         MenuItem sItem1 = new MenuItem("New");
+        sItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStrategyWindow newStrategyWindow = new NewStrategyWindow(backlogs);
+                newStrategyWindow.setStage(stage);
+                newStrategyWindow.setAlignment(Pos.CENTER);
+                newStrategyWindow.setHgap(10);
+                newStrategyWindow.setVgap(10);
+                Scene scene = new Scene(newStrategyWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Strategy");
+                stage.setResizable(false);
+                stage.show();
+                stage.setOnCloseRequest(e -> {
+                    toolBar.setStrategies(backlogs.getKeys());
+                });
+
+            }
+        });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
         strategyMenu.getItems().addAll(sItem1,sItem2,sItem3);
