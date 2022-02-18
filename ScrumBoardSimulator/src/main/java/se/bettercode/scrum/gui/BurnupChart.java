@@ -21,18 +21,18 @@ public class BurnupChart extends AreaChart<Number, Number> {
     static final double lowerBound = 0;
     static final double yUpperBound = 40; //TODO: Make to backlog size in points?
     static final double tickUnit = 1;
+    private int sprintDaysCount = 0;
     ArrayList<BurnupDay> burndays = new ArrayList<>();
 
     public BurnupChart(int xUpperBound, boolean isBurnDown) {
         super(new NumberAxis(lowerBound, xUpperBound, tickUnit), new NumberAxis(lowerBound, yUpperBound, tickUnit));
+        sprintDaysCount = xUpperBound;
         getYAxis().setLabel("Points");
         getXAxis().setLabel("Days");
         setTitle("Burnup");
 
         initChart();
-        totalSeries.setName("Total");
-        doneSeries.setName("Done");
-        this.isBurnDown =isBurnDown;
+        this.isBurnDown = isBurnDown;
     }
 
     public void flipData()
@@ -44,7 +44,7 @@ public class BurnupChart extends AreaChart<Number, Number> {
         for(BurnupDay day : burndays)
         {
             getData().get(0).getData().add(makeDoneSeriesData(day));
-            getData().get(1).getData().add(makeTotalSeriesData(day));
+            getData().get(1).getData().add(getIdealBurnDownLine(day));
         }
     }
     public void changeChart()
@@ -68,10 +68,22 @@ public class BurnupChart extends AreaChart<Number, Number> {
                 for (BurnupDay burnupDay : c.getAddedSubList()) {
                     burndays.add(burnupDay);
                     getData().get(0).getData().add(makeDoneSeriesData(burnupDay));
-                    getData().get(1).getData().add(makeTotalSeriesData(burnupDay));
+                    getData().get(1).getData().add(getIdealBurnDownLine(burnupDay));
                 }
             }
         });
+    }
+
+    private Data getIdealBurnDownLine(BurnupDay burnupDay) {
+        double slope = ((double)burnupDay.getTotal() / 10);
+        double day = burnupDay.getDay();
+        int sprintStory;
+        if(isBurnDown) {
+            sprintStory = (int)((double)burnupDay.getTotal() - (double)slope*day);
+        } else {
+            sprintStory = (int)(slope*day);
+        }
+        return new Data(burnupDay.getDay(), sprintStory);
     }
 
     public void removeAllData() {
@@ -84,6 +96,8 @@ public class BurnupChart extends AreaChart<Number, Number> {
         totalSeries = new Series();
         doneSeries = new Series();
         getData().addAll(doneSeries, totalSeries);
+        getData().get(0).setName("Sprint Chart");
+        getData().get(1).setName("Ideal Chart");
     }
 
     private Data makeTotalSeriesData(BurnupDay burnupDay) {
