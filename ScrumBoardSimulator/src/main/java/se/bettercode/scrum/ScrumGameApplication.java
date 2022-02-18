@@ -92,15 +92,15 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         primaryStage.show();
         TaigaContainer taiga = new TaigaContainer();
-//        try {
-//            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
-//            taiga.setProject("rbjacks3-ser515-groupproject-7");
-//            taiga.getData();
-//        }
-//        catch(IOException e)
-//        {
-//            System.out.println("OH NO");
-//        }
+        try {
+            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
+           // taiga.setProject("rbjacks3-ser515-groupproject-7");
+           // taiga.getData();
+        }
+        catch(IOException e)
+        {
+            System.out.println("OH NO");
+        }
     }
 
     private void setStage() {
@@ -177,9 +177,6 @@ public class ScrumGameApplication extends Application {
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
-
-
-
         return menuBar;
 
     }
@@ -239,6 +236,6 @@ public class ScrumGameApplication extends Application {
     }
 
     private BurnupChart getNewBurnupChart() {
-        return new BurnupChart(SPRINT_LENGTH_IN_DAYS);
+        return new BurnupChart(SPRINT_LENGTH_IN_DAYS, false);
     }
 }
