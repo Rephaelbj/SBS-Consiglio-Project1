@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import se.bettercode.scrum.backlog.SelectableBacklogs;
 
 public class ToolBar extends HBox {
 

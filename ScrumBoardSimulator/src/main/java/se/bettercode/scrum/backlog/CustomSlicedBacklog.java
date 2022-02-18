@@ -30,7 +30,7 @@ public class CustomSlicedBacklog extends Backlog {
     public void init(){
         ArrayList<String> storyTitles = (new RandomStoryTitleGenerator()).generate(storyCount);
         for(int i = 0; i < storyCount; i++){
-            addStory(new Story(3, storyTitles.get(i)));
+            addStory(new Story(pointsPerStory, storyTitles.get(i)));
         }
     }
 

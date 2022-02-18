@@ -1,9 +1,6 @@
 package se.bettercode.scrum.gui;
 
-import com.sun.glass.ui.Window;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,12 +8,10 @@ import javafx.scene.layout.GridPane;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.backlog.CustomSlicedBacklog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 
 import java.io.*;
-import java.nio.file.Path;
 
 public class NewStrategyWindow extends GridPane {
 
@@ -86,8 +81,7 @@ public class NewStrategyWindow extends GridPane {
     {
         System.out.println("add to file "+backlog.getName()+" "+ backlog.getPointCount()+" "+backlog.getStories().size()+" "+backlog.getPointsPerStory());
         try{
-            System.out.println(getClass().getResource("/StrategySave.txt").getFile().toString());
-            File file = new File(getClass().getResource("/StrategySave.txt").getFile().toString());
+            File file = new File("./StrategySave.txt");
             FileWriter write = new FileWriter(file, true);
             BufferedWriter addText = new BufferedWriter(write);
             addText.write(backlog.getName());
@@ -100,6 +94,7 @@ public class NewStrategyWindow extends GridPane {
             addText.newLine();
             addText.close();
             write.close();
+            file.createNewFile();
         }catch(Exception e){
             e.printStackTrace();
         }

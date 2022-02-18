@@ -2,8 +2,7 @@ package se.bettercode.scrum.backlog;
 
 import se.bettercode.utils.Selectable;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class SelectableBacklogs extends Selectable<Backlog> {
@@ -21,7 +20,7 @@ public class SelectableBacklogs extends Selectable<Backlog> {
     private ArrayList<Backlog> loadBacklogs() {
         ArrayList<Backlog> create = new ArrayList<Backlog>();
         try {
-            BufferedReader properties = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/StrategySave.txt")));
+            BufferedReader properties = new BufferedReader(new InputStreamReader(new FileInputStream(new File("./StrategySave.txt"))));
             CustomSlicedBacklog item = new CustomSlicedBacklog();
             int count = 0;
             for (String option = ""; option != null; option = properties.readLine()) {
