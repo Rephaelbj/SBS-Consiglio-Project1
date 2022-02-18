@@ -28,9 +28,11 @@ public class ToolBar extends HBox {
 
         teamChoiceBox.setItems(FXCollections.observableArrayList(teams));
         teamChoiceBox.setTooltip(new Tooltip("Select team"));
+        teamChoiceBox.setPrefWidth(100);
 
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
+        backlogChoiceBox.setPrefWidth(100);
 
         burnUpChartButton.setPrefSize(150, 20);
         burnDownChatButton.setPrefSize(150, 20);
@@ -71,4 +73,8 @@ public class ToolBar extends HBox {
         burnChartChoiceBox.getSelectionModel().selectedItemProperty().addListener(changeListener);
     }
 
+    public void setStrategies(String[] backlogs) {
+        System.out.println("test");
+        backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
+    }
 }

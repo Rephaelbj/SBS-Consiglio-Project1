@@ -3,6 +3,9 @@ package se.bettercode.scrum;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -17,9 +20,9 @@ import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
 import se.bettercode.taiga.TaigaContainer;
 
-import java.io.IOException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 
@@ -92,8 +95,8 @@ public class ScrumGameApplication extends Application {
         TaigaContainer taiga = new TaigaContainer();
         try {
             taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
-            taiga.setProject("rbjacks3-ser515-groupproject-7");
-            taiga.getData();
+           // taiga.setProject("rbjacks3-ser515-groupproject-7");
+           // taiga.getData();
         }
         catch(IOException e)
         {
@@ -144,6 +147,26 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu strategyMenu = new Menu("Strategy");
         MenuItem sItem1 = new MenuItem("New");
+        sItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStrategyWindow newStrategyWindow = new NewStrategyWindow(backlogs);
+                newStrategyWindow.setStage(stage);
+                newStrategyWindow.setAlignment(Pos.CENTER);
+                newStrategyWindow.setHgap(10);
+                newStrategyWindow.setVgap(10);
+                Scene scene = new Scene(newStrategyWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Strategy");
+                stage.setResizable(false);
+                stage.show();
+                stage.setOnCloseRequest(e -> {
+                    toolBar.setStrategies(backlogs.getKeys());
+                });
+
+            }
+        });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
         strategyMenu.getItems().addAll(sItem1,sItem2,sItem3);
@@ -155,7 +178,6 @@ public class ScrumGameApplication extends Application {
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
-
         return menuBar;
 
     }
@@ -218,7 +240,7 @@ public class ScrumGameApplication extends Application {
     }
 
     private BurnupChart getNewBurnupChart() {
-        return new BurnupChart(SPRINT_LENGTH_IN_DAYS);
+        return new BurnupChart(SPRINT_LENGTH_IN_DAYS, false);
     }
 
     private BurnDownChart getBurnDownChart() {

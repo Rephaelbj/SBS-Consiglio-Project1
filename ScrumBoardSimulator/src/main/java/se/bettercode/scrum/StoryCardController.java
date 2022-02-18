@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 
