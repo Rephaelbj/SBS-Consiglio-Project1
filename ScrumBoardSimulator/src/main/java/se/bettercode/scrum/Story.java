@@ -25,7 +25,7 @@ public class Story {
             throw new IllegalArgumentException("Points must not be negative.");
         }
         Random r = new Random();
-        happyValue = r.nextInt(6);
+        this.happyValue = r.nextInt(6);
         this.title = title;
         storyPointSet = new StoryPointSet(points);
     }
@@ -85,6 +85,7 @@ public class Story {
             leftover = points - pointsToApply;
             status.setState(StoryState.FINISHED);
             storyDays.setDoneDay(day);
+            System.out.println("Story Title: " + this.title + ", Happiness value: " + this.happyValue);
         } else { // points < getRemainingPoints()
             storyPointSet.apply(points);
         }
