@@ -9,10 +9,12 @@ public class SelectableBacklogs extends Selectable<Backlog> {
 
     public SelectableBacklogs() {
         ArrayList<Backlog> logs = loadBacklogs();
+        if(logs != null){
+            logs.forEach((strat)->{put(strat.getName(), strat);});
+        }
         Backlog smallBacklog = new SmallBacklog();
         Backlog wellSlicedBacklog = new WellSlicedBacklog();
         Backlog poorlySlicedBacklog = new PoorlySlicedBacklog();
-        logs.forEach((strat)->{put(strat.getName(), strat);});
         put(smallBacklog.getName(), smallBacklog);
         put(wellSlicedBacklog.getName(), wellSlicedBacklog);
         put(poorlySlicedBacklog.getName(), poorlySlicedBacklog);
@@ -50,7 +52,7 @@ public class SelectableBacklogs extends Selectable<Backlog> {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
         return create;
     }

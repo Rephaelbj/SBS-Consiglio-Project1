@@ -47,7 +47,7 @@ public class NewStrategyWindow extends GridPane {
                     }
                     try{
                         if(Integer.parseInt(pointsF.getText()) >= 0){
-                            strategy.setPointsPerStory(Integer.parseInt(pointsF.getText()));
+                            strategy.setPointsPerStory(Integer.parseInt(pointLimitF.getText()));
                         }
                     }catch(Exception e){
                         strategy.setPointsPerStory(0);
