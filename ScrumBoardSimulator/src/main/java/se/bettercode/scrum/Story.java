@@ -17,7 +17,7 @@ public class Story {
     public Story(int points) {
         this(points, "");
         Random r = new Random();
-        happyValue = r.nextInt(6);
+        happyValue = r.nextInt(4);
     }
 
     public Story(int points, String title) {
@@ -25,7 +25,7 @@ public class Story {
             throw new IllegalArgumentException("Points must not be negative.");
         }
         Random r = new Random();
-        happyValue = r.nextInt(6);
+        happyValue = r.nextInt(4);
         this.title = title;
         storyPointSet = new StoryPointSet(points);
     }
@@ -109,9 +109,25 @@ public class Story {
      * This method gets the happy value for the story
      * @return
      */
-    public int getHappyValue()
+    public String getHappyValue()
     {
-        return happyValue;
+        String returnValue = "";
+        switch(happyValue)
+        {
+            case 0:
+                returnValue = "Sad";
+                break;
+            case 1:
+                returnValue = "Mad";
+                break;
+            case 2:
+                returnValue = "Happy";
+                break;
+            case 3:
+                returnValue = "Confused";
+                break;
+        }
+        return returnValue;
     }
 
     @Override
@@ -120,6 +136,7 @@ public class Story {
                 "points=" + getTotalPoints().getPoints() +
                 ", pointsDone=" + getPointsDone().getPoints() +
                 ", status=" + status.getValue() +
+                ", happiness=" + getHappyValue() +
                 '}';
     }
 }
