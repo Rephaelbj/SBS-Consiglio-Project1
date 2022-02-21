@@ -18,13 +18,16 @@ public class BurnupChart extends AreaChart<Number, Number> {
     XYChart.Series totalSeries;
     XYChart.Series doneSeries;
     boolean isBurnDown = false;
+    boolean madeChart = false;
     static final double lowerBound = 0;
     static final double yUpperBound = 40; //TODO: Make to backlog size in points?
     static final double tickUnit = 1;
+    static int totalPoints = 0;
     ArrayList<BurnupDay> burndays = new ArrayList<>();
 
     public BurnupChart(int xUpperBound, boolean isBurnDown) {
         super(new NumberAxis(lowerBound, xUpperBound, tickUnit), new NumberAxis(lowerBound, yUpperBound, tickUnit));
+
         getYAxis().setLabel("Points");
         getXAxis().setLabel("Days");
         setTitle("Burnup");
@@ -44,17 +47,18 @@ public class BurnupChart extends AreaChart<Number, Number> {
         for(BurnupDay day : burndays)
         {
             getData().get(0).getData().add(makeDoneSeriesData(day));
-            getData().get(1).getData().add(makeTotalSeriesData(day));
         }
+        madeChart = false;
+        makeIdeal();
     }
     public void changeChart()
     {
         isBurnDown = !isBurnDown;
 
         if(isBurnDown)
-            setTitle("Burndown");
+            setTitle("Burn-down");
         else
-            setTitle("Burnup");
+            setTitle("Burn-up");
     }
 
 
@@ -67,11 +71,31 @@ public class BurnupChart extends AreaChart<Number, Number> {
             while (c.next()) {
                 for (BurnupDay burnupDay : c.getAddedSubList()) {
                     burndays.add(burnupDay);
+                    totalPoints = burnupDay.getTotal();
                     getData().get(0).getData().add(makeDoneSeriesData(burnupDay));
-                    getData().get(1).getData().add(makeTotalSeriesData(burnupDay));
                 }
             }
+            makeIdeal();
+
         });
+    }
+
+    public void makeIdeal()
+    {
+        if(!madeChart) {
+            for (int i = 0; i < 11; i++) {
+                double slope = totalPoints / 10.0;
+                int day = i;
+                double sprintStory;
+                if (isBurnDown) {
+                    sprintStory = totalPoints - slope * day;
+                } else {
+                    sprintStory = slope * day;
+                }
+                getData().get(1).getData().add(new Data(i, sprintStory));
+            }
+            madeChart = true;
+        }
     }
 
     public void removeAllData() {
