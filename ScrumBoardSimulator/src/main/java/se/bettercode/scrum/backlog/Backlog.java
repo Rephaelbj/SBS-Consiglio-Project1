@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class Backlog {
 
-    private String name;
+    private final String name;
     List<Story> stories = new ArrayList<>();
     IntegerProperty donePoints = new SimpleIntegerProperty(0);
     private DoubleProperty averageLeadTime = new SimpleDoubleProperty();
@@ -24,9 +24,7 @@ public class Backlog {
     protected Backlog(String name) {
         this.name = name;
     }
-    public void setName(String name){
-        this.name = name;
-    }
+
     public String getName() {
         return name;
     }

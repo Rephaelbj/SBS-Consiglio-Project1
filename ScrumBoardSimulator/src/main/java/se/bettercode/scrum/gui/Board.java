@@ -19,17 +19,9 @@ public class Board extends GridPane {
     private final VBox todoColumn = new VBox(10);
     private final VBox startedColumn = new VBox(10);
     private final VBox doneColumn = new VBox(10);
-    private DingAudioClip dingAudioClip = new DingAudioClip();
-    private boolean audio = true;
-    private String taskColor = "";
-    public Board(String audioSetting, String taskSetting) {
-        taskColor = taskSetting;
-        if(audioSetting.contains("mute")){
-            audio = false;
-        }else{
-            dingAudioClip = new DingAudioClip(audioSetting);
-        }
+    private final DingAudioClip dingAudioClip = new DingAudioClip();
 
+    public Board() {
         setPadding(new Insets(10));
 
         int i = 0;
@@ -52,9 +44,7 @@ public class Board extends GridPane {
         for (Story story : backlog.getStories()) {
             story.statusProperty().addListener((observable, oldValue, newValue) -> {
                 updateBoard();
-                if(audio){
-                    dingAudioClip.playIfDone(story);
-                }
+                dingAudioClip.playIfDone(story);
             });
         }
         updateBoard();
@@ -66,13 +56,13 @@ public class Board extends GridPane {
             for (Story story : backlog.getStories()) {
                 switch (story.getStatus()) {
                     case TODO:
-                        todoColumn.getChildren().add(new StoryCardController(story, taskColor));
+                        todoColumn.getChildren().add(new StoryCardController(story));
                         break;
                     case STARTED:
-                        startedColumn.getChildren().add(new StoryCardController(story, taskColor));
+                        startedColumn.getChildren().add(new StoryCardController(story));
                         break;
                     case FINISHED:
-                        doneColumn.getChildren().add(new StoryCardController(story, taskColor));
+                        doneColumn.getChildren().add(new StoryCardController(story));
                         break;
                 }
             }

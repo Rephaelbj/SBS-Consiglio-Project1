@@ -5,12 +5,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import se.bettercode.scrum.Story.StoryState;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.team.Team;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class Sprint {
 
@@ -77,10 +74,6 @@ public class Sprint {
         System.out.println("Total backlog size is " + backlog.getTotalPoints() + " points.");
         System.out.println("Burning through backlog at " + dailyBurn + " points per day.");
 
-        DateFormat dateFormat = new SimpleDateFormat("MMM/dd/yyyy");
-        Calendar cal = Calendar.getInstance();
-
-
         new Thread() {
 
             @Override
@@ -88,11 +81,7 @@ public class Sprint {
                 setRunning(true);
                 for (int day=0; day<=lengthInDays.get(); day++) {
                     setCurrentDay(day);
-                    System.out.println(dateFormat.format(cal.getTime()) + ": " + backlog.getFinishedStoriesCount() + " finished stories in total.");
-
-                    cal.add(Calendar.DATE, 1);
-                    dateFormat.format(cal.getTime());
-
+                    System.out.println("Day " + day + ": " + backlog.getFinishedStoriesCount() + " finished stories in total.");
                     backlog.runDay(dailyBurn, day);
                     sleepThread();
                     if (backlog.isFinished()) {
@@ -103,6 +92,13 @@ public class Sprint {
                 System.out.println(backlog);
                 System.out.println("A total of " + backlog.getFinishedPoints() + " points have been finished!");
                 System.out.println("Wasted " + backlog.getWorkInProgressPoints() + " points");
+                
+                // Reset all unfinished stories to TODO state
+                java.util.List<Story> stories = backlog.getStories();
+                for (Story s : stories) {
+                	StoryStateProperty status = s.statusProperty();
+                	if (status.getState() == StoryState.STARTED) status.setState(StoryState.TODO);
+                }
             }
 
         }.start();

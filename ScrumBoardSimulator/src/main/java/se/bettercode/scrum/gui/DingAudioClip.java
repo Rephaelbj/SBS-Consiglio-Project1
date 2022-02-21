@@ -10,17 +10,10 @@ public class DingAudioClip {
     public static final String BELL_WAV = "/bell.wav";
     public static final int MIN_SLEEP_MILLIS = 250;
     public static final int SLEEP_INCREASE_MILLIS = 20;
-    private AudioClip ding;
-    public DingAudioClip(){
+    private final AudioClip ding;
+
+    public DingAudioClip() {
         this.ding = new AudioClip(getClass().getResource(BELL_WAV).toString());
-    }
-    public DingAudioClip(String audioSetting) {
-        if(audioSetting.equals("default"))
-        {
-            this.ding = new AudioClip(getClass().getResource(BELL_WAV).toString());
-        }else{
-            this.ding = new AudioClip(getClass().getResource(audioSetting).toString());
-        }
     }
 
     protected void playIfDone(Story story) {

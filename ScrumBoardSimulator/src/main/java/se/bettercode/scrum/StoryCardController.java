@@ -5,12 +5,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 
@@ -29,27 +26,17 @@ public class StoryCardController extends BorderPane {
 
     private Story story;
 
-    public StoryCardController(Story story, String taskColor) {
+    public StoryCardController(Story story) {
         this.story = story;
         URL location = getClass().getResource("StoryCard.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-        }
-        if(!taskColor.contains("default")){
-            if(taskColor.contains("red")) {
-                storyCard.setStyle("-fx-background-color: #ff0000;");
-            }else if(taskColor.contains("blue")){
-                storyCard.setStyle("-fx-background-color: #0000ff;");
-            }else if(taskColor.contains("green")){
-                storyCard.setStyle("-fx-background-color: #00ff00;");
-            }else{
-                storyCard.setStyle("-fx-background-color: #"+taskColor+";");
-            }
         }
         storyTitle.setText(story.getTitle());
         storyPoints.setText(Integer.toString(story.getPointsDone().getPoints()) +
