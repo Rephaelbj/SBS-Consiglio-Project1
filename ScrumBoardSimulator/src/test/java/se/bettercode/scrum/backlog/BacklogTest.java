@@ -119,7 +119,9 @@ public class BacklogTest {
 
     @Test
     public void testToString() {
-        backlog.addStory(new Story(1));
-        assertEquals("Backlog{stories=[Story{points=3, pointsDone=0, status=TODO}, Story{points=1, pointsDone=0, status=TODO}], average lead time=0.0}", backlog.toString());
+        Story story = new Story(1);
+        backlog.addStory(story);
+        backlog.getStories();
+        assertEquals("Backlog{stories=[Story{points=3, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(0).getHappyValue() + "}, Story{points=1, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(1).getHappyValue() + "}], average lead time=0.0}", backlog.toString());
     }
 }
