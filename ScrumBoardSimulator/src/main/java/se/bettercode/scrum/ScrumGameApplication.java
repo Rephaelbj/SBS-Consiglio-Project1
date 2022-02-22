@@ -93,6 +93,7 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         primaryStage.show();
         TaigaContainer taiga = new TaigaContainer();
+        System.out.println(primaryStage.isShowing());
         try {
             taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
            // taiga.setProject("rbjacks3-ser515-groupproject-7");
@@ -141,6 +142,25 @@ public class ScrumGameApplication extends Application {
         Menu teamMenu = new Menu("Team");
         MenuItem tItem1 = new MenuItem("New");
         MenuItem tItem2 = new MenuItem("Edit");
+
+        tItem2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(team != null) {
+                    Stage stage = new Stage();
+                    EditTeamWindow editTeam = new EditTeamWindow(team);
+                    editTeam.setStage(stage);
+                    editTeam.setAlignment(Pos.CENTER);
+                    editTeam.setHgap(10);
+                    editTeam.setVgap(10);
+                    Scene scene = new Scene(editTeam, 300, 200);
+                    stage.setScene(scene);
+                    stage.setTitle("Edit Team");
+                    stage.setResizable(false);
+                    stage.show();                }
+
+            }
+        });
         MenuItem tItem3 = new MenuItem("Delete");
         teamMenu.getItems().addAll(tItem1,tItem2,tItem3);
 
