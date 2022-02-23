@@ -122,6 +122,6 @@ public class BacklogTest {
         Story story = new Story(1);
         backlog.addStory(story);
         backlog.getStories();
-        assertEquals("Backlog{stories=[Story{points=3, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(0).getHappyValue() + "}, Story{points=1, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(1).getHappyValue() + "}], average lead time=0.0}", backlog.toString());
+        assertEquals("Backlog{stories=[Story{points=3, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(0).getHappyValue() + ", buisnessValue="+backlog.getStories().get(0).getBuisnessValue()+"}, Story{points=1, pointsDone=0, status=TODO, happiness="+ backlog.getStories().get(1).getHappyValue() + ", buisnessValue="+backlog.getStories().get(1).getBuisnessValue()+"}], average lead time=0.0}", backlog.toString());
     }
 }
