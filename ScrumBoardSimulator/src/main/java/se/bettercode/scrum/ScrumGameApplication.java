@@ -64,6 +64,7 @@ public class ScrumGameApplication extends Application {
         teams = new SelectableTeams();
         toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
         burnupChart = getNewBurnupChart();
+        TaigaIntegration.getTaigaInfo();
     }
 
     @Override
