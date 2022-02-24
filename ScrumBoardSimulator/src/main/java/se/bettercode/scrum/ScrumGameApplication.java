@@ -140,6 +140,22 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu teamMenu = new Menu("Team");
         MenuItem tItem1 = new MenuItem("New");
+        tItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewTeamWindow newTeamWindow = new NewTeamWindow(teams);
+                newTeamWindow.setStage(stage);
+                newTeamWindow.setAlignment(Pos.CENTER);
+                newTeamWindow.setHgap(10);
+                newTeamWindow.setVgap(10);
+                Scene scene = new Scene(newTeamWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Team");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
         MenuItem tItem2 = new MenuItem("Edit");
         MenuItem tItem3 = new MenuItem("Delete");
         teamMenu.getItems().addAll(tItem1,tItem2,tItem3);
