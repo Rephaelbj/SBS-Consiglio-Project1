@@ -69,7 +69,11 @@ public class ToolBar extends HBox {
     }
 
     public void setStrategies(String[] backlogs) {
-        System.out.println("test");
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
+    }
+
+    public void setTeams(String[] teams)
+    {
+        teamChoiceBox.setItems(FXCollections.observableArrayList(teams));
     }
 }

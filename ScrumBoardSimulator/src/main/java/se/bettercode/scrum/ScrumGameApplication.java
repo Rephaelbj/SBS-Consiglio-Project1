@@ -22,6 +22,7 @@ import se.bettercode.taiga.TaigaContainer;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -43,7 +44,10 @@ public class ScrumGameApplication extends Application {
     private BurnupChart burnupChart = getNewBurnupChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
-    
+
+    public ScrumGameApplication() throws FileNotFoundException {
+    }
+
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
         launch(args);
@@ -141,6 +145,25 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu teamMenu = new Menu("Team");
         MenuItem tItem1 = new MenuItem("New");
+        tItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewTeamWindow newTeamWindow = new NewTeamWindow(teams);
+                newTeamWindow.setStage(stage);
+                newTeamWindow.setAlignment(Pos.CENTER);
+                newTeamWindow.setHgap(10);
+                newTeamWindow.setVgap(10);
+                Scene scene = new Scene(newTeamWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Team");
+                stage.setResizable(false);
+                stage.show();
+                stage.setOnCloseRequest(e -> {
+                    toolBar.setTeams(teams.getKeys());
+                });
+            }
+        });
         MenuItem tItem2 = new MenuItem("Edit");
 
         tItem2.setOnAction(new EventHandler<ActionEvent>() {
@@ -226,16 +249,20 @@ public class ScrumGameApplication extends Application {
         ChangeListener backlogChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                backlog = backlogs.get(newValue.toString());
-                loadData();
+                if(newValue != null) {
+                    backlog = backlogs.get(newValue.toString());
+                    loadData();
+                }
             }
         };
 
         ChangeListener teamChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                team = teams.get(newValue.toString());
-                loadData();
+                if(newValue != null) {
+                    team = teams.get(newValue.toString());
+                    loadData();
+                }
             }
         };
 
