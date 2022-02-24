@@ -6,22 +6,26 @@ import java.util.Random;
 
 public class RandomStoryTitleGenerator {
 
-    static String[] verbs = {"Create", "Update", "Remove", "Refactor", "Implement", "Rewrite", "Make", "Redesign", "Reduce"};
+    static String[] verbs = {"Create", "Update", "Remove", "Refactor", "Implement", "Rewrite", "Make", "Redesign", "Reduce",
+            "Add", "Merge", "Save", "Get", "Integrate", "Provide", "Reset", "Fix", "Change", "Modify", "Import", "Authenticate"};
+    static String[] articles = {"a","the"};
     static String[] subject = {"GUI", "Merchant Service", "Sendout", "Customer Callback", "Retention Service", "Checkout",
                         "German Store", "French Store", "Nordic Suffering", "User Tracking", "Out-out Service",
                         "Self Service", "Facebook Integration", "G+ Integration", "PSP Integration", "Bank Integration",
-                        "User ID Integration", "Deposit Service", "Statistics Overview", "Spike", "Random Idea"};
+                        "User ID Integration", "Deposit Service", "Statistics Overview", "Spike", "Random Idea",
+                        "API", "API Features and Specifications", "Interface for User", "Login for User", "Map Viewer Integration" };
 
     private Random random = new Random();
 
     public String generateOne() {
         int randomVerbIndex = random.nextInt(verbs.length);
         int randomSubjectIndex = random.nextInt(subject.length);
-        return verbs[randomVerbIndex] + " " + subject[randomSubjectIndex];
+        int randomArticleIndex = random.nextInt(articles.length);
+        return verbs[randomVerbIndex] + " " + articles[randomArticleIndex] + " "+ subject[randomSubjectIndex];
     }
 
     public ArrayList<String> generate(int n) {
-        final int MAX_ALLOWED_N = verbs.length * subject.length;
+        final int MAX_ALLOWED_N = verbs.length * subject.length* articles.length;
 
         if (n > MAX_ALLOWED_N) {
             throw new IllegalArgumentException("Max value of n is " + MAX_ALLOWED_N);
