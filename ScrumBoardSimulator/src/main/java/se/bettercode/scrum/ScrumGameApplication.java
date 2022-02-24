@@ -6,20 +6,24 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.layout.Border;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import org.json.JSONObject;
+
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.Board;
@@ -48,6 +52,10 @@ public class ScrumGameApplication extends Application {
     private BurnupChart burnupChart;
     private Stage primaryStage;
     private StageUserPrefs prefs;
+    private String username;
+    private String password;
+    private String projectSlug;
+    private JSONObject taigaResponse;
     
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
@@ -64,7 +72,6 @@ public class ScrumGameApplication extends Application {
         teams = new SelectableTeams();
         toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
         burnupChart = getNewBurnupChart();
-        TaigaIntegration.getTaigaInfo();
     }
 
     @Override
@@ -132,6 +139,7 @@ public class ScrumGameApplication extends Application {
         toolBar.setBacklogChoiceBoxListener(backlogChoiceBoxListener);
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
         toolBar.setEditButtonAction((event) -> { if (team != null) buildEditTeamStage(); });
+        toolBar.setTaigaButtonAction((event) -> buildTaigaIntegrationStage());
 
         toolBar.setResetGameButtonAction((event) -> {
         	primaryStage.close();
@@ -229,6 +237,95 @@ public class ScrumGameApplication extends Application {
         //burndownChartStage.setScene(scene);
         burndownChartStage.show();
 
+    }
+    
+    /* This method is used to build the Stage for editing the team attributes. */
+    private void buildTaigaIntegrationStage() {
+    	Stage taigaIntegrationStage = new Stage();
+    	taigaIntegrationStage.setTitle("Taiga Integration");
+    	
+    	Label promptLabel = new Label("Please enter your Taiga authentication credentials:");
+    	
+    	Text usernamePrompt = new Text("Username:");
+    	usernamePrompt.setFont(Font.font("Lucida Sans", FontWeight.BOLD, 14));
+    	TextField usernameField = new TextField();
+    	Label usernameErrorLabel = new Label("Please enter username!");
+    	usernameErrorLabel.setTextFill(Color.RED);
+    	usernameErrorLabel.setVisible(false);
+    	FlowPane usernamePane = new FlowPane(10.0, 10.0);
+    	usernamePane.getChildren().addAll(usernamePrompt, usernameField, usernameErrorLabel);
+    	
+    	Text passwordPrompt = new Text("Password:");
+    	passwordPrompt.setFont(Font.font("Lucida Sans", FontWeight.BOLD, 14));
+    	PasswordField passwordField = new PasswordField();
+    	Label passwordErrorLabel = new Label("Please enter password!");
+    	passwordErrorLabel.setTextFill(Color.RED);
+    	passwordErrorLabel.setVisible(false);
+    	FlowPane passwordPane = new FlowPane(10.0, 10.0);
+    	passwordPane.getChildren().addAll(passwordPrompt, passwordField, passwordErrorLabel);
+    	
+    	Text projectSlugPrompt = new Text("Project slug:");
+    	projectSlugPrompt.setFont(Font.font("Lucida Sans", FontWeight.BOLD, 14));
+    	TextField projectSlugField = new TextField();
+    	projectSlugField.setPrefWidth(250.0);
+    	Label projectSlugErrorLabel = new Label("Please enter project slug!");
+    	projectSlugErrorLabel.setTextFill(Color.RED);
+    	projectSlugErrorLabel.setVisible(false);
+    	FlowPane projectSlugPane = new FlowPane(10.0, 10.0);
+    	projectSlugPane.getChildren().addAll(projectSlugPrompt, projectSlugField, projectSlugErrorLabel);
+    	
+    	Button cancelButton = new Button("Cancel");
+    	cancelButton.setPrefWidth(100.0);
+    	cancelButton.setOnAction((event) -> taigaIntegrationStage.close());
+    	
+    	Button acceptButton = new Button("Accept");
+    	acceptButton.setPrefWidth(100.0);
+    	acceptButton.setOnAction((event) -> {
+    		if (usernameField.getText().equals("") || passwordField.getText().equals("")
+    				|| projectSlugField.getText().equals("")) {
+    			if (usernameField.getText().equals("")) usernameErrorLabel.setVisible(true);
+    			else usernameErrorLabel.setVisible(false);
+    			if (passwordField.getText().equals("")) passwordErrorLabel.setVisible(true);
+    			else passwordErrorLabel.setVisible(false);
+    			if (projectSlugField.getText().equals("")) projectSlugErrorLabel.setVisible(true);
+    			else projectSlugErrorLabel.setVisible(false);
+    		} else {
+    			taigaIntegrationStage.close();
+	    		username = usernameField.getText();
+	    		password = passwordField.getText();
+	    		projectSlug = projectSlugField.getText();
+	    		try {
+	    			taigaResponse = new JSONObject(TaigaIntegration.getTaigaInfo(username, password, projectSlug));
+	    			System.out.println(taigaResponse);
+	    		} catch (org.json.JSONException e) {
+	    			Stage errorStage = new Stage();
+	    			errorStage.setTitle("Uh oh...");
+	    			
+	    			Text errorText = new Text("Connection unsuccessful! Please try again.");
+	    			errorText.setFont(Font.font("Lucida Sans", FontWeight.SEMI_BOLD, 12.0));
+	    			Button okButton = new Button("OK");
+	    			okButton.setPrefWidth(100.0);
+	    			okButton.setTranslateX(80.0);
+	    			okButton.setOnAction(eh -> errorStage.close());
+	    			VBox errorPane = new VBox(10.0);
+	    			errorPane.setPadding(new Insets(10.0, 0.0, 0.0, 20.0));
+	    			errorPane.getChildren().addAll(errorText, okButton);
+	    			
+	    			errorStage.setScene(new Scene(errorPane, 320.0, 100.0));
+	    			errorStage.show();
+	    		}
+    		}
+    	});
+    	
+    	HBox buttonPane = new HBox(10.0);
+    	buttonPane.getChildren().addAll(cancelButton, acceptButton);
+    	
+    	VBox taigaIntegrationPane = new VBox(10.0);
+    	taigaIntegrationPane.setPadding(new Insets(20.0));
+    	taigaIntegrationPane.getChildren().addAll(promptLabel, usernamePane, passwordPane, projectSlugPane, buttonPane);
+    	
+    	taigaIntegrationStage.setScene(new Scene(taigaIntegrationPane, 450.0, 250.0));
+    	taigaIntegrationStage.show();
     }
 
 }

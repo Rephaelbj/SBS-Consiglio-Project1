@@ -13,14 +13,13 @@ public class TaigaIntegration {
 	static String authResponse;
 	static String projResponse;
 	
-	public static String getTaigaInfo() {
+	public static String getTaigaInfo(String username, String password, String projectSlug) {
 		// Login and get authorization token
-
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create("https://api.taiga.io/api/v1/auth"))
 				.header("Content-Type", "application/json")
-				.POST(HttpRequest.BodyPublishers.ofString("{\"password\":\"T2021blue\", \"type\":\"normal\",\"username\":\"dbiegan\"}"))
+				.POST(HttpRequest.BodyPublishers.ofString("{\"password\":\"" + password + "\", \"type\":\"normal\",\"username\":\"" + username + "\"}"))
 				.build();
 		client.sendAsync(request, BodyHandlers.ofString())
 				.thenApply(HttpResponse::body)
@@ -35,7 +34,7 @@ public class TaigaIntegration {
 		// Get project info
 		client = HttpClient.newHttpClient();
 		request = HttpRequest.newBuilder()
-				.uri(URI.create("https://api.taiga.io/api/v1/projects/by_slug?slug=gianniconsiglio-sbs-consiglio-project1"))
+				.uri(URI.create("https://api.taiga.io/api/v1/projects/by_slug?slug=" + projectSlug + ""))
 				.header("Content-Type", "application/json")
 				.header("Authorization", "Bearer " + authToken)
 				.build();
