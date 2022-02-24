@@ -9,6 +9,7 @@ public class Story {
 
     public enum StoryState {TODO, STARTED, FINISHED;}
     public int happyValue = 0;
+    public int buisnessValue = 0;
     private StoryPointSet storyPointSet;
 
     private StoryStateProperty status = new StoryStateProperty();
@@ -26,6 +27,7 @@ public class Story {
         }
         Random r = new Random();
         happyValue = r.nextInt(4);
+        buisnessValue = r.nextInt(6);
         this.title = title;
         storyPointSet = new StoryPointSet(points);
     }
@@ -96,6 +98,31 @@ public class Story {
         return storyPointSet.getRemaining().getPoints();
     }
 
+    public void setBuisnessValue(int buisnessValue){this.buisnessValue = buisnessValue;}
+    public String getBuisnessValue(){
+        String value = "";
+        switch (buisnessValue){
+            case 0:
+                value = "x-small";
+                break;
+            case 1:
+                value = "small";
+                break;
+            case 2:
+                value = "medium";
+                break;
+            case 3:
+                value = "large";
+                break;
+            case 4:
+                value = "x-large";
+                break;
+            case 5:
+                value = "xx-large";
+                break;
+        }
+        return value;
+    }
     /**
      * This method sets the happy value of the story
      * @param newHappyValue
@@ -137,6 +164,7 @@ public class Story {
                 ", pointsDone=" + getPointsDone().getPoints() +
                 ", status=" + status.getValue() +
                 ", happiness=" + getHappyValue() +
+                ", buisnessValue=" + getBuisnessValue() +
                 '}';
     }
 }
