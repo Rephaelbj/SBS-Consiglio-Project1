@@ -27,8 +27,7 @@ public class Story {
         }
         Random r = new Random();
         happyValue = r.nextInt(4);
-        Random r2 = new Random();
-        buisnessValue = r2.nextInt(6);
+        buisnessValue = r.nextInt(6);
         this.title = title;
         storyPointSet = new StoryPointSet(points);
     }
