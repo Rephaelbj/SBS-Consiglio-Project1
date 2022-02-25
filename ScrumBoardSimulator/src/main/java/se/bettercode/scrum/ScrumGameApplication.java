@@ -24,7 +24,7 @@ import se.bettercode.taiga.TaigaContainer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.util.Arrays;
 
 
 public class ScrumGameApplication extends Application {
@@ -43,9 +43,11 @@ public class ScrumGameApplication extends Application {
     private BurnupChart burnupChart = getNewBurnupChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
+    public static String filePath;
     
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
+        filePath = args[0];
         launch(args);
     }
 

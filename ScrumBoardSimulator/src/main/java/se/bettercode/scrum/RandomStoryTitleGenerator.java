@@ -1,19 +1,53 @@
 package se.bettercode.scrum;
 
+import org.mockito.internal.matchers.Null;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static se.bettercode.scrum.ScrumGameApplication.filePath;
+
 public class RandomStoryTitleGenerator {
 
-    static String[] verbs = {"Create", "Update", "Remove", "Refactor", "Implement", "Rewrite", "Make", "Redesign", "Reduce",
-            "Add", "Merge", "Save", "Get", "Integrate", "Provide", "Reset", "Fix", "Change", "Modify", "Import", "Authenticate"};
-    static String[] articles = {"a","the"};
-    static String[] subject = {"GUI", "Merchant Service", "Sendout", "Customer Callback", "Retention Service", "Checkout",
-                        "German Store", "French Store", "Nordic Suffering", "User Tracking", "Out-out Service",
-                        "Self Service", "Facebook Integration", "G+ Integration", "PSP Integration", "Bank Integration",
-                        "User ID Integration", "Deposit Service", "Statistics Overview", "Spike", "Random Idea",
-                        "API", "API Features and Specifications", "Interface for User", "Login for User", "Map Viewer Integration" };
+    static String[] verbs;
+    static String[] articles;
+    static String[] subject;
+
+    public RandomStoryTitleGenerator() {
+
+        if(filePath == null) {
+            filePath = "C:\\Users\\bkanumur\\Documents\\GitHub\\SBS-Consiglio-Project1\\ScrumBoardSimulator\\src\\main\\java\\se\\bettercode\\scrum\\static\\words.txt";
+        }
+        System.out.println(filePath);
+        File file = new File(filePath);
+        try{
+            BufferedReader br
+                    = new BufferedReader(new FileReader(file));
+            String st;
+            int count = 0;
+            while ((st = br.readLine()) != null){
+                count++;
+                // Print the string
+                String[] array = st.split(",");
+                if(count == 1){
+                    verbs = array;
+                }else if (count == 2){
+                    articles = array;
+                }else{
+                    subject = array;
+                }
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private Random random = new Random();
 
