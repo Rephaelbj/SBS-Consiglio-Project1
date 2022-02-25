@@ -85,7 +85,7 @@ public class StoryTest {
 
     @Test
     public void testToString() throws Exception {
-        assertEquals("Story{points=5, pointsDone=0, status=TODO, happiness=" + story.getHappyValue() + "}", story.toString());
+        assertEquals("Story{points=5, pointsDone=0, status=TODO, happiness=" + story.getHappyValue() + ", buisnessValue="+story.getBuisnessValue()+"}", story.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)
