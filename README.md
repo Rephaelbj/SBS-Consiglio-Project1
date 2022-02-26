@@ -22,3 +22,6 @@ Nabeel Khan
 ### Even newer
 Gianni Consiglio
 Rephael Jackson
+
+### Project slug
+dbiegan-ser516-scrumboardsimulator
