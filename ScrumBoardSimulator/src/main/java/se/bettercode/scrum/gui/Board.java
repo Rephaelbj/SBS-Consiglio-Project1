@@ -22,6 +22,20 @@ public class Board extends GridPane {
     private DingAudioClip dingAudioClip = new DingAudioClip();
     private boolean audio = true;
     private String taskColor = "";
+    
+    public Board() {
+        setPadding(new Insets(10));
+
+        int i = 0;
+        for (VBox columnBox : columns()) {
+            ColumnConstraints constraints = new ColumnConstraints();
+            constraints.setPercentWidth(100); // Will be treated as relative weight when sum is over 100.
+            getColumnConstraints().add(constraints);
+            add(columnBox, i++, 1);
+        }
+
+    }
+    
     public Board(String audioSetting, String taskSetting) {
         taskColor = taskSetting;
         if(audioSetting.contains("mute")){

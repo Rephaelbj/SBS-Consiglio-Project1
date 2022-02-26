@@ -21,7 +21,7 @@ public class Backlog {
 
     private BacklogBurnup burnup = new BacklogBurnup();
 
-    protected Backlog(String name) {
+    public Backlog(String name) {
         this.name = name;
     }
     public void setName(String name){
