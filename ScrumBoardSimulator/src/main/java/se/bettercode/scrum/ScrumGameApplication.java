@@ -34,6 +34,7 @@ import se.bettercode.scrum.gui.ToolBar;
 import se.bettercode.scrum.prefs.StageUserPrefs;
 import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
+import se.bettercode.scrum.team.TeamImpl;
 
 
 public class ScrumGameApplication extends Application {
@@ -59,6 +60,8 @@ public class ScrumGameApplication extends Application {
     private JSONObject taigaResponse;
     private int project_id;
     private JSONArray userStoriesResponse;
+    private String sprintName;
+    private java.util.List<Story> taigaUserStories;
     
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
@@ -277,6 +280,13 @@ public class ScrumGameApplication extends Application {
     	FlowPane projectSlugPane = new FlowPane(10.0, 10.0);
     	projectSlugPane.getChildren().addAll(projectSlugPrompt, projectSlugField, projectSlugErrorLabel);
     	
+    	Text sprintNamePrompt = new Text("Sprint name:");
+    	sprintNamePrompt.setFont(Font.font("Lucida Sans", FontWeight.BOLD, 14));
+    	TextField sprintNameField = new TextField();
+    	sprintNameField.setPrefWidth(250.0);
+    	FlowPane sprintNamePane = new FlowPane(10.0, 10.0);
+    	sprintNamePane.getChildren().addAll(sprintNamePrompt, sprintNameField);
+    	
     	Button cancelButton = new Button("Cancel");
     	cancelButton.setPrefWidth(100.0);
     	cancelButton.setOnAction((event) -> taigaIntegrationStage.close());
@@ -297,12 +307,40 @@ public class ScrumGameApplication extends Application {
 	    		username = usernameField.getText();
 	    		password = passwordField.getText();
 	    		projectSlug = projectSlugField.getText();
+	    		sprintName = sprintNameField.getText();
 	    		try {
+	    			taigaUserStories = new java.util.ArrayList<>();
 	    			taigaResponse = new JSONObject(TaigaIntegration.getTaigaInfo(username, password, projectSlug));
 	    			project_id = taigaResponse.getJSONArray("epic_statuses").getJSONObject(0).getInt("project_id");
 	    			userStoriesResponse = new JSONArray(TaigaIntegration.getTaigaUserStories(project_id));
 	    			System.out.println(userStoriesResponse);
+	    			
+	    			backlog = new Backlog("Taiga");
+	    			int velocity = 0;
+	    			String teamName = "";
+	    			for (int i = 0; i < userStoriesResponse.length(); i++) {
+	    				JSONObject usJSON = userStoriesResponse.getJSONObject(i);
+	    				if (i == 0) teamName = usJSON.getJSONObject("project_extra_info").getString("name"); // Only get team name once
+	    				if (!sprintName.equals("")) { // Only grab all the user stories in the specified Sprint
+		    				String sName = !usJSON.isNull("milestone_name") ? usJSON.getString("milestone_name") : null;
+		    				if (sName != null && sName.equals(sprintName)) {
+			    				String userStoryName = usJSON.getString("subject");
+			    				int points = usJSON.getInt("total_points");
+			    				velocity += points;
+			    				backlog.addStory(new Story(points, userStoryName));
+		    				}
+	    				} else { // Otherwise grab all the user stories in the backlog
+	    					String userStoryName = usJSON.getString("subject");
+		    				int points = usJSON.getInt("total_points");
+		    				velocity += points;
+		    				backlog.addStory(new Story(points, userStoryName));
+	    				}
+	    			}
+	    			team = new TeamImpl(teamName, velocity);
+	    			loadData();
+	    			
 	    		} catch (org.json.JSONException e) {
+	    			System.out.println(e);
 	    			Stage errorStage = new Stage();
 	    			errorStage.setTitle("Uh oh...");
 	    			
@@ -327,7 +365,7 @@ public class ScrumGameApplication extends Application {
     	
     	VBox taigaIntegrationPane = new VBox(10.0);
     	taigaIntegrationPane.setPadding(new Insets(20.0));
-    	taigaIntegrationPane.getChildren().addAll(promptLabel, usernamePane, passwordPane, projectSlugPane, buttonPane);
+    	taigaIntegrationPane.getChildren().addAll(promptLabel, usernamePane, passwordPane, projectSlugPane, sprintNamePane, buttonPane);
     	
     	taigaIntegrationStage.setScene(new Scene(taigaIntegrationPane, 450.0, 250.0));
     	taigaIntegrationStage.show();
