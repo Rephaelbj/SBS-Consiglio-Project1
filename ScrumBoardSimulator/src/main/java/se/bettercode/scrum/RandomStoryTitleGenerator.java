@@ -22,8 +22,7 @@ public class RandomStoryTitleGenerator {
         filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
         System.out.println(filePath);
         File file = new File(filePath);
-
-
+        
         try{
             BufferedReader br
                     = new BufferedReader(new FileReader(file));
