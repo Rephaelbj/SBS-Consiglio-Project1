@@ -25,7 +25,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.util.Arrays;
 
 
 public class ScrumGameApplication extends Application {
@@ -47,7 +47,7 @@ public class ScrumGameApplication extends Application {
 
     public ScrumGameApplication() throws FileNotFoundException {
     }
-
+    
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
         launch(args);
@@ -138,6 +138,20 @@ public class ScrumGameApplication extends Application {
         MenuItem fItem3 = new MenuItem("Import from Taiga");
         MenuItem fItem4 = new MenuItem("Export to Taiga");
         MenuItem fItem5 = new MenuItem("Settings");
+        fItem5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                SettingsMenu settings = new SettingsMenu(stage);
+                settings.setAlignment(Pos.CENTER);
+                settings.setHgap(10);
+                settings.setVgap(10);
+                Scene scene = new Scene(settings, 400, 300);
+                stage.setScene(scene);
+                stage.setTitle("Settings");
+                stage.show();
+            }
+        });
         MenuItem fItem6 = new MenuItem("Exit");
         fileMenu.getItems().addAll(fItem1,fItem2,fItem3,fItem4,fItem5,fItem6);
 
