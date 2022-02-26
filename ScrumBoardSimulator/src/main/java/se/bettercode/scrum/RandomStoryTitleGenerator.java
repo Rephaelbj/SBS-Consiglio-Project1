@@ -8,21 +8,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static se.bettercode.scrum.ScrumGameApplication.filePath;
 
 public class RandomStoryTitleGenerator {
 
     static String[] verbs;
     static String[] articles;
     static String[] subject;
+    String filePath;
 
     public RandomStoryTitleGenerator() {
 
-        if(filePath == null) {
-            filePath = "C:\\Users\\bkanumur\\Documents\\GitHub\\SBS-Consiglio-Project1\\ScrumBoardSimulator\\src\\main\\java\\se\\bettercode\\scrum\\static\\words.txt";
-        }
+
+        filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
         System.out.println(filePath);
         File file = new File(filePath);
+
+
         try{
             BufferedReader br
                     = new BufferedReader(new FileReader(file));

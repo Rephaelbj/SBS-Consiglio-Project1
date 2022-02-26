@@ -44,14 +44,12 @@ public class ScrumGameApplication extends Application {
     private BurnupChart burnupChart = getNewBurnupChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
-    public static String filePath;
 
     public ScrumGameApplication() throws FileNotFoundException {
     }
-
+    
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
-        filePath = args[0];
         launch(args);
     }
 
