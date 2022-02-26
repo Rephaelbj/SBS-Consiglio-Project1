@@ -22,6 +22,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import se.bettercode.scrum.backlog.Backlog;
@@ -56,6 +57,8 @@ public class ScrumGameApplication extends Application {
     private String password;
     private String projectSlug;
     private JSONObject taigaResponse;
+    private int project_id;
+    private JSONArray userStoriesResponse;
     
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
@@ -296,7 +299,9 @@ public class ScrumGameApplication extends Application {
 	    		projectSlug = projectSlugField.getText();
 	    		try {
 	    			taigaResponse = new JSONObject(TaigaIntegration.getTaigaInfo(username, password, projectSlug));
-	    			System.out.println(taigaResponse);
+	    			project_id = taigaResponse.getJSONArray("epic_statuses").getJSONObject(0).getInt("project_id");
+	    			userStoriesResponse = new JSONArray(TaigaIntegration.getTaigaUserStories(project_id));
+	    			System.out.println(userStoriesResponse);
 	    		} catch (org.json.JSONException e) {
 	    			Stage errorStage = new Stage();
 	    			errorStage.setTitle("Uh oh...");

@@ -10,8 +10,10 @@ import org.json.JSONObject;
 
 public class TaigaIntegration {
 
+	static String authToken;
 	static String authResponse;
 	static String projResponse;
+	static String userStoriesResponse;
 	
 	public static String getTaigaInfo(String username, String password, String projectSlug) {
 		// Login and get authorization token
@@ -29,7 +31,7 @@ public class TaigaIntegration {
 				.join();
 		
 		JSONObject responseJSON = new JSONObject(authResponse);
-		String authToken = responseJSON.getString("auth_token");
+		authToken = responseJSON.getString("auth_token");
 
 		// Get project info
 		client = HttpClient.newHttpClient();
@@ -46,5 +48,23 @@ public class TaigaIntegration {
 				.join();
 		
 		return projResponse;
+	}
+	
+	public static String getTaigaUserStories(int projectId) {
+		// Get user stories
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder()
+				.uri(URI.create("https://api.taiga.io/api/v1/userstories?project=" + projectId + ""))
+				.header("Content-Type", "application/json")
+				.header("Authorization", "Bearer " + authToken)
+				.build();
+		client.sendAsync(request, BodyHandlers.ofString())
+				.thenApply(HttpResponse::body)
+				.thenAccept(res -> {
+					userStoriesResponse = res;
+				})
+				.join();
+			
+		return userStoriesResponse;
 	}
 }
