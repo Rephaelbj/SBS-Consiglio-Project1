@@ -1,0 +1,3 @@
+Create,Update,Remove,Refactor,Implement,Rewrite,Make,Redesign,Reduce,Add,Merge,Save,Get,Integrate,Provide,Reset,Fix,Change,Modify,Import,Authenticate
+a,the
+GUI,Merchant Service,Sendout,Customer Callback,Retention Service,Checkout,German Store,French Store,Nordic Suffering,User Tracking,Out-out Service,Self Service,Facebook Integration,G+ Integration,PSP Integration,Bank Integration,User ID Integration,Deposit Service,Statistics Overview,Spike,Random Idea,API,API Features and Specifications,Interface for User,Login for User,Map Viewer Integration

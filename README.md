@@ -2,10 +2,10 @@
 This repository contains our team's work for the SER 516 semester project.
 
 ## Build
-mvn clean install
+mvn clean package install
 
 ## Run
-java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT.jar
+java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 ## Contributors
 
@@ -22,6 +22,3 @@ Nabeel Khan
 ### Even newer
 Gianni Consiglio
 Rephael Jackson
-
-### Project slug
-dbiegan-ser516-scrumboardsimulator
