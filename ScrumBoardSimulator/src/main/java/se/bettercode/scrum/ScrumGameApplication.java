@@ -25,7 +25,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.util.Arrays;
 
 
 public class ScrumGameApplication extends Application {
@@ -47,7 +47,7 @@ public class ScrumGameApplication extends Application {
 
     public ScrumGameApplication() throws FileNotFoundException {
     }
-
+    
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
         launch(args);
