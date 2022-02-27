@@ -22,9 +22,10 @@ import se.bettercode.taiga.TaigaContainer;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.util.Arrays;
 
 
 public class ScrumGameApplication extends Application {
@@ -43,6 +44,9 @@ public class ScrumGameApplication extends Application {
     private BurnupChart burnupChart = getNewBurnupChart();
     private Stage primaryStage;
     private StageUserPrefs prefs;
+
+    public ScrumGameApplication() throws FileNotFoundException {
+    }
     
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
@@ -93,6 +97,7 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         primaryStage.show();
         TaigaContainer taiga = new TaigaContainer();
+        System.out.println(primaryStage.isShowing());
         try {
             taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
            // taiga.setProject("rbjacks3-ser515-groupproject-7");
@@ -133,6 +138,20 @@ public class ScrumGameApplication extends Application {
         MenuItem fItem3 = new MenuItem("Import from Taiga");
         MenuItem fItem4 = new MenuItem("Export to Taiga");
         MenuItem fItem5 = new MenuItem("Settings");
+        fItem5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                SettingsMenu settings = new SettingsMenu(stage);
+                settings.setAlignment(Pos.CENTER);
+                settings.setHgap(10);
+                settings.setVgap(10);
+                Scene scene = new Scene(settings, 400, 300);
+                stage.setScene(scene);
+                stage.setTitle("Settings");
+                stage.show();
+            }
+        });
         MenuItem fItem6 = new MenuItem("Exit");
         fileMenu.getItems().addAll(fItem1,fItem2,fItem3,fItem4,fItem5,fItem6);
 
@@ -140,7 +159,45 @@ public class ScrumGameApplication extends Application {
         //Strategy menu
         Menu teamMenu = new Menu("Team");
         MenuItem tItem1 = new MenuItem("New");
+        tItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewTeamWindow newTeamWindow = new NewTeamWindow(teams);
+                newTeamWindow.setStage(stage);
+                newTeamWindow.setAlignment(Pos.CENTER);
+                newTeamWindow.setHgap(10);
+                newTeamWindow.setVgap(10);
+                Scene scene = new Scene(newTeamWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("New Team");
+                stage.setResizable(false);
+                stage.show();
+                stage.setOnCloseRequest(e -> {
+                    toolBar.setTeams(teams.getKeys());
+                });
+            }
+        });
         MenuItem tItem2 = new MenuItem("Edit");
+
+        tItem2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(team != null) {
+                    Stage stage = new Stage();
+                    EditTeamWindow editTeam = new EditTeamWindow(team);
+                    editTeam.setStage(stage);
+                    editTeam.setAlignment(Pos.CENTER);
+                    editTeam.setHgap(10);
+                    editTeam.setVgap(10);
+                    Scene scene = new Scene(editTeam, 300, 200);
+                    stage.setScene(scene);
+                    stage.setTitle("Edit Team");
+                    stage.setResizable(false);
+                    stage.show();                }
+
+            }
+        });
         MenuItem tItem3 = new MenuItem("Delete");
         teamMenu.getItems().addAll(tItem1,tItem2,tItem3);
 
@@ -206,16 +263,20 @@ public class ScrumGameApplication extends Application {
         ChangeListener backlogChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                backlog = backlogs.get(newValue.toString());
-                loadData();
+                if(newValue != null) {
+                    backlog = backlogs.get(newValue.toString());
+                    loadData();
+                }
             }
         };
 
         ChangeListener teamChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                team = teams.get(newValue.toString());
-                loadData();
+                if(newValue != null) {
+                    team = teams.get(newValue.toString());
+                    loadData();
+                }
             }
         };
 
