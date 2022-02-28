@@ -17,7 +17,6 @@ public class ToolBar extends HBox {
     private final Button startButton = new Button("Start Sprint");
     private final Button editButton = new Button("Edit Team");
     private final Button burndownButton = new Button("Burndown Chart");
-    private final Button taigaButton = new Button("Connect to Taiga");
     private final Region buttonSpacer = new Region();
     private final Button resetGameButton = new Button("Reset Game");
     private ChoiceBox<String> teamChoiceBox = new ChoiceBox<>();
@@ -46,14 +45,11 @@ public class ToolBar extends HBox {
         editButton.setPrefSize(100, 20);
 
         burndownButton.setPrefSize( 130, 20);
-        
-        taigaButton.setPrefSize(130, 20);
-        
+
         buttonSpacer.setPrefWidth(860);
         resetGameButton.setPrefSize(100, 20);
 
-        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton,
-        		taigaButton, buttonSpacer, resetGameButton);
+        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton, buttonSpacer, resetGameButton);
 
     }
 
@@ -99,9 +95,6 @@ public class ToolBar extends HBox {
 
     public void setBurndownButtonAction(EventHandler<ActionEvent> eventHandler) { burndownButton.setOnAction(eventHandler);}
 
-    public void setTaigaButtonAction(EventHandler<ActionEvent> eventHandler) {
-    	taigaButton.setOnAction(eventHandler);
-    }
     public void setResetGameButtonAction(EventHandler<ActionEvent> eventHandler) {
     	resetGameButton.setOnAction(eventHandler);
     }

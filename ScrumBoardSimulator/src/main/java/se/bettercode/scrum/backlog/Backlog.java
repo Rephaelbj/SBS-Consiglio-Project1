@@ -35,6 +35,11 @@ public class Backlog {
         stories.add(story);
     }
 
+    public void reset()
+    {
+        stories.clear();
+    }
+
     protected Story getStory() {
         return stories.stream().filter(p -> p.getStatus() != Story.StoryState.FINISHED).findFirst().get();
     }
