@@ -10,10 +10,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 
 public class ToolBar extends HBox {
 
     private final Button startButton = new Button("Start Sprint");
+    private final Button editButton = new Button("Edit Team");
+    private final Button burndownButton = new Button("Burndown Chart");
+    private final Region buttonSpacer = new Region();
+    private final Button resetGameButton = new Button("Reset Game");
     private ChoiceBox<String> teamChoiceBox = new ChoiceBox<>();
     private ChoiceBox<String> backlogChoiceBox = new ChoiceBox<>();
     private ChoiceBox<String> burnChartChoiceBox = new ChoiceBox<>();
@@ -36,8 +41,15 @@ public class ToolBar extends HBox {
         burnUpChartButton.setPrefSize(150, 20);
 
         startButton.setPrefSize(100, 20);
+        
+        editButton.setPrefSize(100, 20);
 
-        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton);
+        burndownButton.setPrefSize( 130, 20);
+
+        buttonSpacer.setPrefWidth(860);
+        resetGameButton.setPrefSize(100, 20);
+
+        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton, buttonSpacer, resetGameButton);
 
     }
 
@@ -75,5 +87,15 @@ public class ToolBar extends HBox {
     public void setTeams(String[] teams)
     {
         teamChoiceBox.setItems(FXCollections.observableArrayList(teams));
+    }
+    
+    public void setEditButtonAction(EventHandler<ActionEvent> eventHandler) {
+    	editButton.setOnAction(eventHandler);
+    }
+
+    public void setBurndownButtonAction(EventHandler<ActionEvent> eventHandler) { burndownButton.setOnAction(eventHandler);}
+
+    public void setResetGameButtonAction(EventHandler<ActionEvent> eventHandler) {
+    	resetGameButton.setOnAction(eventHandler);
     }
 }
