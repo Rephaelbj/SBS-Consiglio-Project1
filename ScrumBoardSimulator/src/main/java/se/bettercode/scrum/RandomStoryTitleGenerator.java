@@ -15,31 +15,43 @@ public class RandomStoryTitleGenerator {
     static String[] articles;
     static String[] subject;
     String filePath;
+    String folderPath;
 
     public RandomStoryTitleGenerator() {
 
-
         filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
-        System.out.println(filePath);
         File file = new File(filePath);
+        folderPath = System.getProperty("user.home") + "/Desktop/SBS Program";
+        File createdFile = new File(folderPath);
         
         try{
-            BufferedReader br
-                    = new BufferedReader(new FileReader(file));
-            String st;
-            int count = 0;
-            while ((st = br.readLine()) != null){
-                count++;
-                // Print the string
-                String[] array = st.split(",");
-                if(count == 1){
-                    verbs = array;
-                }else if (count == 2){
-                    articles = array;
-                }else{
-                    subject = array;
+            if (file.exists()){
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String st;
+                int count = 0;
+                while ((st = br.readLine()) != null){
+                    count++;
+                    // Print the string
+                    String[] array = st.split(",");
+                    if(count == 1){
+                        verbs = array;
+                    }else if (count == 2){
+                        articles = array;
+                    }else{
+                        subject = array;
+                    }
                 }
+            }else{
+                if(!createdFile.exists()){
+                    createdFile.mkdirs();
+                }
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("Create,Update,Remove,Refactor,Implement,Rewrite,Make,Redesign,Reduce,Add,Merge,Save,Get,Integrate,Provide,Reset,Fix,Change,Modify,Import,Authenticate\n");
+                bw.write("a,the\n");
+                bw.write("GUI,Merchant Service,Sendout,Customer Callback,Retention Service,Checkout,German Store,French Store,Nordic Suffering,User Tracking,Out-out Service,Self Service,Facebook Integration,G+ Integration,PSP Integration,Bank Integration,User ID Integration,Deposit Service,Statistics Overview,Spike,Random Idea,API,API Features and Specifications,Interface for User,Login for User,Map Viewer Integration\n");
+                bw.close();
             }
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
