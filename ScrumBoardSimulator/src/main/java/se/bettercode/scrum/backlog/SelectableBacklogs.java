@@ -22,7 +22,7 @@ public class SelectableBacklogs extends Selectable<Backlog> {
     private ArrayList<Backlog> loadBacklogs() {
         ArrayList<Backlog> create = new ArrayList<Backlog>();
         try {
-            BufferedReader properties = new BufferedReader(new InputStreamReader(new FileInputStream(new File("./StrategySave.txt"))));
+            BufferedReader properties = new BufferedReader(new InputStreamReader(new FileInputStream(new File(System.getProperty("user.home") + "/Desktop/SBS Program//StrategySave.txt"))));
             CustomSlicedBacklog item = new CustomSlicedBacklog();
             int count = 0;
             for (String option = ""; option != null; option = properties.readLine()) {
