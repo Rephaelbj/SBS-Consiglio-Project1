@@ -49,10 +49,10 @@ public class ToolBar extends HBox {
         
         taigaButton.setPrefSize(130, 20);
         
-        buttonSpacer.setPrefWidth(760);
+        buttonSpacer.setPrefWidth(860);
         resetGameButton.setPrefSize(100, 20);
 
-        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton, editButton,
+        getChildren().addAll(teamChoiceBox, backlogChoiceBox, burnUpChartButton, startButton,
         		taigaButton, buttonSpacer, resetGameButton);
 
     }
