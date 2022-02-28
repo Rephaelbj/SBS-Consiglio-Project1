@@ -1,6 +1,6 @@
 package se.bettercode.scrum;
 
-import org.mockito.internal.matchers.Null;
+
 
 import java.io.*;
 import java.util.ArrayList;
