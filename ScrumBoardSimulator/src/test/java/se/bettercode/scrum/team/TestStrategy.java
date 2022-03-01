@@ -5,6 +5,7 @@ import org.junit.Test;
 import se.bettercode.scrum.backlog.CustomSlicedBacklog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestStrategy {
@@ -28,10 +29,10 @@ public class TestStrategy {
         custom.setPointsPerStory(1);
 
         backlogs.add(custom);
-        assertTrue(backlogs.size(), 4);
+        assertEquals(backlogs.size(), 4);
         assertTrue(backlogs.get(custom.getName()) != null);
         backlogs.delete(custom);
-        assertTrue(backlogs.size(), 3);
+        assertEquals(backlogs.size(), 3);
         assertTrue(backlogs.get(custom.getName()) == null);
     }
 }
