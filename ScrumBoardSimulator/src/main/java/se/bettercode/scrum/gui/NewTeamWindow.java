@@ -3,9 +3,11 @@ package se.bettercode.scrum.gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -31,6 +33,13 @@ public class NewTeamWindow extends GridPane {
         Label nameLabel = new Label("Name:");
         Label velocityLabel = new Label("Velocity: ");
 
+        Label maturityLabel = new Label("Maturity Level:");
+        ChoiceBox<String> maturityChoiceBox = new ChoiceBox();
+        maturityChoiceBox.getItems().addAll("Beginner", "Established", "Expert");
+        add(maturityLabel, 0, 3, 1, 1);
+        add(maturityChoiceBox, 1, 3, 1, 1);
+        
+        
         Button createTeam = new Button("Create Team");
         createTeam.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -40,6 +49,8 @@ public class NewTeamWindow extends GridPane {
 
                     if (nameField.getText() != "") {
                         Team team = new TeamImpl(nameField.getText(), velocity);
+                        if (maturityChoiceBox.getValue() != null)
+                        	team.setMaturity(maturityChoiceBox.getValue());
                         teams.addTeam(team);
                         currentStage.fireEvent(new WindowEvent(currentStage, WindowEvent.WINDOW_CLOSE_REQUEST));
                     } else {
@@ -70,8 +81,9 @@ public class NewTeamWindow extends GridPane {
         this.add(velocityLabel, 0, 2, 1, 1);
         this.add(velocityField, 1, 2, 1, 1);
 
-        this.add(createTeam, 0, 3, 1, 1);
-        this.add(cancel, 1, 3, 1, 1);
+        this.add(createTeam, 0, 4, 1, 1);
+        this.add(cancel, 1, 4, 1, 1);
+        
     }
 
     public void setStage(Stage newStage) {
