@@ -50,6 +50,22 @@ public class RandomStoryTitleGenerator {
                 bw.write("a,the\n");
                 bw.write("GUI,Merchant Service,Sendout,Customer Callback,Retention Service,Checkout,German Store,French Store,Nordic Suffering,User Tracking,Out-out Service,Self Service,Facebook Integration,G+ Integration,PSP Integration,Bank Integration,User ID Integration,Deposit Service,Statistics Overview,Spike,Random Idea,API,API Features and Specifications,Interface for User,Login for User,Map Viewer Integration\n");
                 bw.close();
+
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String st;
+                int count =0;
+                while((st= br.readLine())!=null){
+                   count++;
+                   String[] array = st.split(",");
+                   if (count==1){
+                       verbs = array;
+                   }else if(count==2){
+                       articles =array;
+                    }
+                   else{
+                       subject=array;
+                   }
+                }
             }
 
 
