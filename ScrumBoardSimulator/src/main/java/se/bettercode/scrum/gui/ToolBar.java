@@ -33,6 +33,12 @@ public class ToolBar extends HBox {
         teamChoiceBox.setItems(FXCollections.observableArrayList(teams));
         teamChoiceBox.setTooltip(new Tooltip("Select team"));
 
+        burnUpChartButton.setPrefSize(150, 20);
+
+        startButton.setPrefSize(100, 20);
+
+        editButton.setPrefSize(100, 20);
+
         backlogChoiceBox.setItems(FXCollections.observableArrayList(backlogs));
         backlogChoiceBox.setTooltip(new Tooltip("Select backlog"));
 

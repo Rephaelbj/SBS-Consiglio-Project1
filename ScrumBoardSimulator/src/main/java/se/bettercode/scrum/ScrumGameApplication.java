@@ -104,7 +104,6 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         setStage();
         primaryStage.show();
-        System.out.println(primaryStage.isShowing());
     }
 
     private void setStage() {
@@ -145,9 +144,7 @@ public class ScrumGameApplication extends Application {
                 stage.setTitle("Taiga Import");
                 stage.show();
                 stage.setOnCloseRequest(e -> {
-                    System.out.println("HERE");
                     if (taigaWindow.getBacklog() != null && taigaWindow.getBacklog().getTotalPoints() > 0) {
-                        System.out.println("BRO");
                         backlog = taigaWindow.getBacklog();
                         loadData();
                     }
@@ -248,8 +245,6 @@ public class ScrumGameApplication extends Application {
         sItem3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                System.out.println(toolBar.getStrategy());
                 if(toolBar.getStrategy() != null)
                 {
                     CustomSlicedBacklog custom = new CustomSlicedBacklog();
