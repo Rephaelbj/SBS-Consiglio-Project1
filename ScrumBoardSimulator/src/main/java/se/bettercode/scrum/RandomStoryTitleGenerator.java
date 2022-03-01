@@ -4,7 +4,6 @@ package se.bettercode.scrum;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -14,33 +13,15 @@ public class RandomStoryTitleGenerator {
     static String[] verbs;
     static String[] articles;
     static String[] subject;
-    String filePath;
-    String folderPath;
+    String filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
+    String folderPath =System.getProperty("user.home") + "/Desktop/SBS Program";
+    File file = new File(filePath);
+    File createdFile= new File(folderPath);
 
     public RandomStoryTitleGenerator() {
-
-        filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
-        File file = new File(filePath);
-        folderPath = System.getProperty("user.home") + "/Desktop/SBS Program";
-        File createdFile = new File(folderPath);
-        
         try{
             if (file.exists()){
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                String st;
-                int count = 0;
-                while ((st = br.readLine()) != null){
-                    count++;
-                    // Print the string
-                    String[] array = st.split(",");
-                    if(count == 1){
-                        verbs = array;
-                    }else if (count == 2){
-                        articles = array;
-                    }else{
-                        subject = array;
-                    }
-                }
+                readSetArrays(file);
             }else{
                 if(!createdFile.exists()){
                     createdFile.mkdirs();
@@ -50,31 +31,31 @@ public class RandomStoryTitleGenerator {
                 bw.write("a,the\n");
                 bw.write("GUI,Merchant Service,Sendout,Customer Callback,Retention Service,Checkout,German Store,French Store,Nordic Suffering,User Tracking,Out-out Service,Self Service,Facebook Integration,G+ Integration,PSP Integration,Bank Integration,User ID Integration,Deposit Service,Statistics Overview,Spike,Random Idea,API,API Features and Specifications,Interface for User,Login for User,Map Viewer Integration\n");
                 bw.close();
-
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                String st;
-                int count =0;
-                while((st= br.readLine())!=null){
-                   count++;
-                   String[] array = st.split(",");
-                   if (count==1){
-                       verbs = array;
-                   }else if(count==2){
-                       articles =array;
-                    }
-                   else{
-                       subject=array;
-                   }
-                }
+                readSetArrays(file);
             }
-
-
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void readSetArrays(File file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String st;
+        int count =0;
+        while((st= br.readLine())!=null){
+            count++;
+            String[] array = st.split(",");
+            if (count==1){
+                verbs = array;
+            }else if(count==2){
+                articles =array;
+            }
+            else{
+                subject=array;
+            }
+        }
     }
 
     private Random random = new Random();
