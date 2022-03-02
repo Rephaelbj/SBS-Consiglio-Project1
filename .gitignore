@@ -30,3 +30,6 @@ ScrumBoardSimulator/bin/
 ScrumBoardSimulator/.classpath
 ScrumBoardSimulator/.project
 ScrumBoardSimulator/.settings 
+/bin/
+.classpath
+.project

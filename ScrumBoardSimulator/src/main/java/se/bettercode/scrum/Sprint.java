@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import se.bettercode.scrum.backlog.Backlog;
 import se.bettercode.scrum.team.Team;
+import se.bettercode.scrum.team.TeamImpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,8 +42,28 @@ public class Sprint {
         return lengthInDays;
     }
 
-    public int getDailyBurnrate() {
-        return team.velocityProperty().get() / lengthInDays.get();
+    /**
+     * This method computes the work done for the day which depends on the maturity
+     * level of the team.
+     * 
+     * @return burn for the day
+     */
+    public int getDayBurn() {
+    	TeamImpl teamImpl = (TeamImpl) team;
+    	int burnBase = team.velocityProperty().get() / lengthInDays.get();
+    	int dayBurn = 0;
+    	switch (teamImpl.mLevel) {
+	    	case BEGINNER:
+	    		dayBurn = (int) (Math.random() * Math.random() * burnBase + 0.5 * burnBase);
+	    		break;
+	    	case ESTABLISHED:
+	    		dayBurn = (int) (Math.random() * burnBase + 0.5 * burnBase);
+	    		break;
+	    	case EXPERT:
+	    		dayBurn = (int) (0.5 * Math.random() * burnBase + 0.75 * burnBase);
+	    		break;
+    	}
+        return dayBurn;
     }
 
     public int getCurrentDay() {
@@ -69,13 +90,10 @@ public class Sprint {
         if (team == null || backlog == null) {
             throw new IllegalArgumentException("Team and Backlog must both be set before running Sprint");
         }
-
-        int dailyBurn = getDailyBurnrate();
-
         System.out.println("Running Sprint simulation with team " + team + " for Sprint \"" + name + "\" for " + lengthInDays.get() + " days...");
         System.out.println(backlog);
         System.out.println("Total backlog size is " + backlog.getTotalPoints() + " points.");
-        System.out.println("Burning through backlog at " + dailyBurn + " points per day.");
+        System.out.println("Burning through backlog with " + team.maturityProperty().getValue() + " maturity level.");
 
         DateFormat dateFormat = new SimpleDateFormat("MMM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -93,7 +111,8 @@ public class Sprint {
                     cal.add(Calendar.DATE, 1);
                     dateFormat.format(cal.getTime());
 
-                    backlog.runDay(dailyBurn, day);
+                    int dayBurn = getDayBurn();
+                    backlog.runDay(dayBurn, day);
                     sleepThread();
                     if (backlog.isFinished()) {
                         break;

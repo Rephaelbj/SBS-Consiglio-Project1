@@ -18,6 +18,10 @@ public interface Team {
 
     IntegerProperty workInProgressLimitProperty();
 
+    void setMaturity(String maturity);
+    
+    StringProperty maturityProperty();
+    
     @Override
     String toString();
 }

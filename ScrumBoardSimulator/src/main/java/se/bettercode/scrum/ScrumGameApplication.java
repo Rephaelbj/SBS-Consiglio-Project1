@@ -276,6 +276,7 @@ public class ScrumGameApplication extends Application {
         statusBar.bindDaysInSprint(sprint.lengthInDaysProperty());
         statusBar.bindCurrentDay(sprint.currentDayProperty());
         statusBar.bindLeadTime(backlog.averageLeadTimeProperty());
+        statusBar.bindMaturityLevel(team.maturityProperty());
     }
 
     private void bindActionsToToolBar() {
