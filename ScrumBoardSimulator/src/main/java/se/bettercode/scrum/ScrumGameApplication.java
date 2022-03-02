@@ -247,12 +247,35 @@ public class ScrumGameApplication extends Application {
         strategyMenu.getItems().addAll(sItem1, sItem2, sItem3);
 
 
+        //Story menu
+        Menu storyMenu = new Menu("User Story");
+        MenuItem stItem1 = new MenuItem("Add");
+
+        stItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStoryWindow newStoryWindow = new NewStoryWindow();
+                newStoryWindow.setStage(stage);
+                newStoryWindow.setAlignment(Pos.CENTER);
+                newStoryWindow.setHgap(10);
+                newStoryWindow.setVgap(10);
+                Scene scene = new Scene(newStoryWindow, 400, 200);
+                stage.setScene(scene);
+                stage.setTitle("Add User Story");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
+        storyMenu.getItems().addAll(stItem1);
+
         MenuBar menuBar = new MenuBar();
 
         // Add menus
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
+        menuBar.getMenus().add(storyMenu);
         return menuBar;
 
     }
