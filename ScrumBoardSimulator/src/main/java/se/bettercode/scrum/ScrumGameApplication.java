@@ -250,7 +250,7 @@ public class ScrumGameApplication extends Application {
         //Story menu
         Menu storyMenu = new Menu("User Story");
         MenuItem stItem1 = new MenuItem("Add");
-
+        Application app = this;
         stItem1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -260,6 +260,7 @@ public class ScrumGameApplication extends Application {
                 newStoryWindow.setAlignment(Pos.CENTER);
                 newStoryWindow.setHgap(10);
                 newStoryWindow.setVgap(10);
+                newStoryWindow.setApp(app);
                 Scene scene = new Scene(newStoryWindow, 700, 500);
                 stage.setScene(scene);
                 stage.setTitle("Add User Story");
@@ -328,12 +329,17 @@ public class ScrumGameApplication extends Application {
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
 
         toolBar.setResetGameButtonAction((event) -> {
-            primaryStage.close();
-            team = null;
-            backlog = null;
-            this.init();
-            this.start(new Stage());
+            resetApp();
         });
+    }
+
+    public void resetApp()
+    {
+        primaryStage.close();
+        team = null;
+        backlog = null;
+        this.init();
+        this.start(new Stage());
     }
 
     private void loadData() {

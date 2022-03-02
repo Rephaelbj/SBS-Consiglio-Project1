@@ -40,7 +40,7 @@ public class RandomStoryTitleGenerator {
         }
     }
 
-    private void readSetArrays(File file) throws IOException {
+    private static void readSetArrays(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         int count =0;
@@ -59,6 +59,55 @@ public class RandomStoryTitleGenerator {
     }
 
     private Random random = new Random();
+
+
+    static public void updateFile(String[] subjects, String[] articles, String[] verbs) throws IOException {
+        // Delete the file
+        String filePath = System.getProperty("user.home") + "/Desktop/SBS Program/words.txt";
+        String folderPath =System.getProperty("user.home") + "/Desktop/SBS Program";
+        File folder = new File(folderPath);
+        File file = new File(filePath);
+        if(folder.exists())
+        {
+            if(file.exists())
+                file.delete();
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            int counter = 0;
+            for(String verb : verbs)
+            {
+                counter++;
+                if(counter < verbs.length)
+                    bw.write(verb+",");
+                else
+                    bw.write(verb);
+
+            }
+            bw.write("\n");
+            counter = 0;
+            for(String article : articles)
+            {
+                counter++;
+                if(counter < articles.length)
+                    bw.write(article+",");
+                else
+                    bw.write(article);
+            }
+            bw.write("\n");
+            counter = 0;
+            for(String subject : subjects)
+            {
+                counter++;
+                if(counter < subjects.length)
+                    bw.write(subject+",");
+                else
+                    bw.write(subject);
+            }
+            bw.write("\n");
+            bw.close();
+            readSetArrays(file);
+        }
+    }
 
     public String generateOne() {
         int randomVerbIndex = random.nextInt(verbs.length);

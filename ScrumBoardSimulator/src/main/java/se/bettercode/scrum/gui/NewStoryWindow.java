@@ -1,19 +1,27 @@
 package se.bettercode.scrum.gui;
 
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import se.bettercode.scrum.RandomStoryTitleGenerator;
+import se.bettercode.scrum.ScrumGameApplication;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 
 public class NewStoryWindow extends GridPane {
 
-    //Textfields
+    Application app;
+
+    //TextAreas
     TextArea verbsF = new TextArea();
     TextArea articlesF = new TextArea();
     TextArea subjectF = new TextArea();
@@ -24,7 +32,8 @@ public class NewStoryWindow extends GridPane {
     Label subjectL = new Label("Add subject: ");
 
     //Button
-    Button createStory = new Button("Add to Auto-generated List of User Stories");
+    Button createStory = new Button("Update Word File");
+
     private Stage currentStage = null;
 
     public NewStoryWindow(){
@@ -39,10 +48,24 @@ public class NewStoryWindow extends GridPane {
         this.add(subjectL,0,2);
         this.add(subjectF,1,2);
         this.add(createStory,0,4,2,1);
+        createStory.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    saveFile();
+                    ((ScrumGameApplication) app).resetApp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    private void appendToFile(){
-
+    public void saveFile() throws IOException {
+        String[] subjects = subjectF.getText().split(",");
+        String[] articles = articlesF.getText().split(",");
+        String[] verbs = verbsF.getText().split(",");
+        RandomStoryTitleGenerator.updateFile(subjects,articles,verbs);
     }
 
     public void setStage(Stage stage) {
@@ -72,7 +95,7 @@ public class NewStoryWindow extends GridPane {
         }
     }
 
-//    public NewStoryWindow(SelectableBacklogs backlogs)
-
-
+    public void setApp(Application appRef){
+        this.app = appRef;
+    }
 }
