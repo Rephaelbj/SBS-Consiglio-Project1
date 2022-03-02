@@ -23,6 +23,26 @@ public class TeamImpl implements Team {
         maturity.setValue("Established");
         mLevel = MaturityLevel.ESTABLISHED; 
     }
+    
+    public TeamImpl(String name, int velocity, String maturity) {
+        this(name, velocity, 1);
+        this.maturity = new SimpleStringProperty();
+        switch (maturity) {
+        case "Beginner":
+        	this.maturity.setValue("Beginner");
+            mLevel = MaturityLevel.BEGINNER;
+            break;
+        case "Established":
+        	this.maturity.setValue("Established");
+            mLevel = MaturityLevel.ESTABLISHED;
+            break;
+        case "Expert":
+        	this.maturity.setValue("Expert");
+            mLevel = MaturityLevel.EXPERT;
+            break;
+        }
+         
+    }
 
     public TeamImpl(String name, int velocity, int workInProgressLimit) {
         if (workInProgressLimit < 1) {
