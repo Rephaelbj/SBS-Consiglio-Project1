@@ -21,7 +21,7 @@ public class Backlog {
 
     private BacklogBurnup burnup = new BacklogBurnup();
 
-    protected Backlog(String name) {
+    public Backlog(String name) {
         this.name = name;
     }
     public void setName(String name){
@@ -33,6 +33,11 @@ public class Backlog {
 
     public void addStory(Story story) {
         stories.add(story);
+    }
+
+    public void reset()
+    {
+        stories.clear();
     }
 
     protected Story getStory() {
