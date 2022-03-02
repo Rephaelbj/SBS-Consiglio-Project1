@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import se.bettercode.scrum.backlog.Backlog;
+import se.bettercode.scrum.backlog.CustomSlicedBacklog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.*;
 import se.bettercode.scrum.prefs.StageUserPrefs;
@@ -103,7 +104,6 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         setStage();
         primaryStage.show();
-        System.out.println(primaryStage.isShowing());
     }
 
     private void setStage() {
@@ -144,9 +144,7 @@ public class ScrumGameApplication extends Application {
                 stage.setTitle("Taiga Import");
                 stage.show();
                 stage.setOnCloseRequest(e -> {
-                    System.out.println("HERE");
                     if (taigaWindow.getBacklog() != null && taigaWindow.getBacklog().getTotalPoints() > 0) {
-                        System.out.println("BRO");
                         backlog = taigaWindow.getBacklog();
                         loadData();
                     }
@@ -244,6 +242,19 @@ public class ScrumGameApplication extends Application {
         });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
+        sItem3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(toolBar.getStrategy() != null)
+                {
+                    CustomSlicedBacklog custom = new CustomSlicedBacklog();
+                    custom.setName(toolBar.getStrategy());
+                    backlogs.delete(custom);
+                    toolBar.setStrategies(backlogs.getKeys());
+
+                }
+            }
+        });
         strategyMenu.getItems().addAll(sItem1, sItem2, sItem3);
 
 

@@ -17,4 +17,10 @@ public class Selectable<T> {
     public String[] getKeys() {
         return map.keySet().toArray(new String[map.size()]);
     }
+
+    public void remove(String key){map.remove(key);}
+
+    public int getSize(){return map.size();}
+
+    public void empty(){map.clear();}
 }
