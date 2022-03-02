@@ -260,7 +260,7 @@ public class ScrumGameApplication extends Application {
                 newStoryWindow.setAlignment(Pos.CENTER);
                 newStoryWindow.setHgap(10);
                 newStoryWindow.setVgap(10);
-                Scene scene = new Scene(newStoryWindow, 400, 200);
+                Scene scene = new Scene(newStoryWindow, 700, 500);
                 stage.setScene(scene);
                 stage.setTitle("Add User Story");
                 stage.setResizable(false);
