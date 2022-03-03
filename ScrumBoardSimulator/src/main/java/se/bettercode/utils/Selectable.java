@@ -19,6 +19,6 @@ public class Selectable<T> {
     }
     
     public void deleteTeam(String key) {
-    	// TODO: Implement delete team
+    	map.remove(key);
     }
 }
