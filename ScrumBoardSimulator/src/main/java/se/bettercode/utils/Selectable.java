@@ -17,4 +17,8 @@ public class Selectable<T> {
     public String[] getKeys() {
         return map.keySet().toArray(new String[map.size()]);
     }
+    
+    public void deleteTeam(String key) {
+    	// TODO: Implement delete team
+    }
 }
