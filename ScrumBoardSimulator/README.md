@@ -28,7 +28,7 @@ The application is built using JavaFX.
 
 ## How to run
 * Launching jar from command line: ```java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar```
-
+* Add the configuration: ![img.png](img.png)
 ## Continuous Integration
 [http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/](http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/)
 This job is triggered automatically by a Jenkins hook on GitHub.
