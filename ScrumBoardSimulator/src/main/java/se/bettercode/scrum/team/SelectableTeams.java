@@ -90,4 +90,9 @@ public class SelectableTeams extends Selectable<Team> {
 
     }
     
+    @Override
+    public void deleteTeam(String key) {
+    	super.deleteTeam(key);
+    }
+    
 }

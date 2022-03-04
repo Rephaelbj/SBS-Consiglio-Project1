@@ -33,7 +33,7 @@ public class Selectable<T> {
     	
     	// Remove from save file
     	String output = "";
-        String path = System.getProperty("user.home") + "/Desktop/SBS Program/Team.txt";
+        String path = System.getProperty("user.home") + "/Desktop/SBS Program/Teams.txt";
         File file = new File(path);
         try {
             if (file.exists()) {
@@ -43,13 +43,15 @@ public class Selectable<T> {
                 while((input = reader.readLine()) != null)
                 {
                     String[] values = input.split("\\|");
-                    if (values.length >= 3) {
+                    if (values.length >= 2) {
                     	if (!values[0].equals(key)) {
-                    		output += input;
+                    		output += input + "\n";
                     	}
                     }                    
                 }
+                System.out.println("output: " + output);
                 reader.close();
+                fi.close();
                 file.delete();
             }
             file = new File(path);
