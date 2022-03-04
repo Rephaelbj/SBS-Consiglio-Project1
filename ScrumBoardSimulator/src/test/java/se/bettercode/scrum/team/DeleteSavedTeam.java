@@ -25,7 +25,7 @@ public class DeleteSavedTeam {
 		TeamImpl tts = new TeamImpl("The Three Stooges", 51, "Established");
 		TeamImpl koth = new TeamImpl("King of the Hill", 35, "Beginner");
 		
-		String path = System.getProperty("user.home") + "/Desktop/SBS Program/Test.txt";
+		String path = System.getProperty("user.home") + "/Desktop/SBS Program/Teams.txt";
         String folderPath = System.getProperty("user.home") + "/Desktop/SBS Program";
         File file = new File(path);
         try {
@@ -47,7 +47,7 @@ public class DeleteSavedTeam {
 		String expectedFileContents = "Trailor Park Boys|23|ExpertKing of the Hill|35|Beginner";
 		
 		String actualFileContents = "";
-		String path = System.getProperty("user.home") + "/Desktop/SBS Program/Test.txt";
+		String path = System.getProperty("user.home") + "/Desktop/SBS Program/Teams.txt";
         File file = new File(path);
         try {
             if (file.exists()) {

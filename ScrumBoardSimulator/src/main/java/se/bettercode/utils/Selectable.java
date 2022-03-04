@@ -49,7 +49,6 @@ public class Selectable<T> {
                     	}
                     }                    
                 }
-                System.out.println("output: " + output);
                 reader.close();
                 fi.close();
                 file.delete();
