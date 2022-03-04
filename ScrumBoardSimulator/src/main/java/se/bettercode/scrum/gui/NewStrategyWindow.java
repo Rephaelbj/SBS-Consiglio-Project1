@@ -81,7 +81,7 @@ public class NewStrategyWindow extends GridPane {
     {
         System.out.println("add to file "+backlog.getName()+" "+ backlog.getPointCount()+" "+backlog.getStories().size()+" "+backlog.getPointsPerStory());
         try{
-            File file = new File("./StrategySave.txt");
+            File file = new File(System.getProperty("user.home") + "/Desktop/SBS Program/StrategySave.txt");
             FileWriter write = new FileWriter(file, true);
             BufferedWriter addText = new BufferedWriter(write);
             addText.write(backlog.getName());

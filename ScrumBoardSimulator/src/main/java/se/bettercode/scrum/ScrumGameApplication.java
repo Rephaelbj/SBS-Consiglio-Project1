@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import se.bettercode.scrum.backlog.Backlog;
+import se.bettercode.scrum.backlog.CustomSlicedBacklog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.*;
 import se.bettercode.scrum.prefs.StageUserPrefs;
@@ -103,7 +104,6 @@ public class ScrumGameApplication extends Application {
         bindActionsToToolBar();
         setStage();
         primaryStage.show();
-        System.out.println(primaryStage.isShowing());
     }
 
     private void setStage() {
@@ -144,9 +144,7 @@ public class ScrumGameApplication extends Application {
                 stage.setTitle("Taiga Import");
                 stage.show();
                 stage.setOnCloseRequest(e -> {
-                    System.out.println("HERE");
                     if (taigaWindow.getBacklog() != null && taigaWindow.getBacklog().getTotalPoints() > 0) {
-                        System.out.println("BRO");
                         backlog = taigaWindow.getBacklog();
                         loadData();
                     }
@@ -253,8 +251,44 @@ public class ScrumGameApplication extends Application {
         });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
+        sItem3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(toolBar.getStrategy() != null)
+                {
+                    CustomSlicedBacklog custom = new CustomSlicedBacklog();
+                    custom.setName(toolBar.getStrategy());
+                    backlogs.delete(custom);
+                    toolBar.setStrategies(backlogs.getKeys());
+
+                }
+            }
+        });
         strategyMenu.getItems().addAll(sItem1, sItem2, sItem3);
 
+
+        //Story menu
+        Menu storyMenu = new Menu("User Story");
+        MenuItem stItem1 = new MenuItem("Add");
+        Application app = this;
+        stItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStoryWindow newStoryWindow = new NewStoryWindow();
+                newStoryWindow.setStage(stage);
+                newStoryWindow.setAlignment(Pos.CENTER);
+                newStoryWindow.setHgap(10);
+                newStoryWindow.setVgap(10);
+                newStoryWindow.setApp(app);
+                Scene scene = new Scene(newStoryWindow, 700, 500);
+                stage.setScene(scene);
+                stage.setTitle("Add User Story");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
+        storyMenu.getItems().addAll(stItem1);
 
         MenuBar menuBar = new MenuBar();
 
@@ -262,6 +296,7 @@ public class ScrumGameApplication extends Application {
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
+        menuBar.getMenus().add(storyMenu);
         return menuBar;
 
     }
@@ -315,12 +350,17 @@ public class ScrumGameApplication extends Application {
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
 
         toolBar.setResetGameButtonAction((event) -> {
-            primaryStage.close();
-            team = null;
-            backlog = null;
-            this.init();
-            this.start(new Stage());
+            resetApp();
         });
+    }
+
+    public void resetApp()
+    {
+        primaryStage.close();
+        team = null;
+        backlog = null;
+        this.init();
+        this.start(new Stage());
     }
 
     private void loadData() {

@@ -60,4 +60,10 @@ public class Selectable<T> {
             writer.close();
         } catch (FileNotFoundException fnfe) {} catch (IOException ioe) {}
     }
+
+    public void remove(String key){map.remove(key);}
+
+    public int getSize(){return map.size();}
+
+    public void empty(){map.clear();}
 }
