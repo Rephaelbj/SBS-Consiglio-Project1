@@ -1,4 +1,4 @@
-# SBS-Bieganski
+# SBS-Consiglio-Project1
 This repository contains our team's work for the SER 516 semester project.
 
 ## Setup
@@ -14,8 +14,13 @@ Now we will use Intellij for the instructions however the steps in eclipse shoul
 4. You can run the program using the command below however you need to add this to the VM arguments: --module-path="path/to/lib/folder" --add-modules=javafx.controls,javafx.fxml,javafx.media
 
 
-## Run
-java -jar target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar
+## How to run
+* For the following ensure module path is the directory to your javafx sdk 17 lib folder.
+* Launching jar from command line: ```java -jar --module-path="D:\java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.fxml,javafx.media target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar```
+* Add the configuration: ![img.png](img.png)
+## Continuous Integration
+[http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/](http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/)
+This job is triggered automatically by a Jenkins hook on GitHub.
 
 ## Contributors
 

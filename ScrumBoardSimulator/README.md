@@ -29,7 +29,7 @@ The application is built using JavaFX.
 ## How to run
 * For the following ensure module path is the directory to your javafx sdk 17 lib folder.
 * Launching jar from command line: ```java -jar --module-path="D:\java\javafx-sdk-17.0.2\lib" --add-modules=javafx.controls,javafx.fxml,javafx.media target/ScrumBoardSimulator-1.0-SNAPSHOT-jar-with-dependencies.jar```
-* Add the configuration: ![img.png](img.png)
+* Add the configuration: ![img.png](../img.png)
 ## Continuous Integration
 [http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/](http://jenkins2.crisp.se/job/betrcode/job/ScrumBoardSimulator/)
 This job is triggered automatically by a Jenkins hook on GitHub.
