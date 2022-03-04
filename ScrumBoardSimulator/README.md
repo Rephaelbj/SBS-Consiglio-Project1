@@ -20,7 +20,7 @@ unplanned work and see how it affects the Sprint and how much waste is created.
 The application is built using JavaFX.
 
 ## Prerequisites for development
-* Java 8
+* Java 17
 * Maven 3
 
 ## How to build & run tests
