@@ -10,7 +10,6 @@ public class SelectableTeams extends Selectable<Team> {
         readTeams();
     }
 
-
     public void readTeams() throws FileNotFoundException {
         // Check if Folder exist
         String path = System.getProperty("user.home") + "/Desktop/SBS Program/Teams.txt";
@@ -90,5 +89,10 @@ public class SelectableTeams extends Selectable<Team> {
         }
 
     }
-
+    
+    @Override
+    public void deleteTeam(String key) {
+    	super.deleteTeam(key);
+    }
+    
 }

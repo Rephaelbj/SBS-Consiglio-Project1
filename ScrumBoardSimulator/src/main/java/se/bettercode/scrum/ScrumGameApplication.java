@@ -215,6 +215,15 @@ public class ScrumGameApplication extends Application {
             }
         });
         MenuItem tItem3 = new MenuItem("Delete");
+        tItem3.setOnAction(e -> {
+        	System.out.println("Deleting team " + team.getName());
+        	teams.deleteTeam(team.getName());
+        	primaryStage.close();
+            team = null;
+            backlog = null;
+            this.init();
+            this.start(new Stage());
+        });
         teamMenu.getItems().addAll(tItem1, tItem2, tItem3);
 
         //Strategy menu
