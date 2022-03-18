@@ -21,7 +21,7 @@ public class Backlog {
 
     private BacklogBurnup burnup = new BacklogBurnup();
 
-    protected Backlog(String name) {
+    public Backlog(String name) {
         this.name = name;
     }
     public void setName(String name){
@@ -33,6 +33,11 @@ public class Backlog {
 
     public void addStory(Story story) {
         stories.add(story);
+    }
+
+    public void reset()
+    {
+        stories.clear();
     }
 
     protected Story getStory() {
@@ -95,10 +100,10 @@ public class Backlog {
                 '}';
     }
 
-    public void runDay(int dailyBurn, int day) {
+    public void runDay(int dayBurn, int day) {
         Story story;
         storyLoop:
-        while (dailyBurn > 0) {
+        while (dayBurn > 0) {
             try {
                 story = getStory();
             } catch (NoSuchElementException e) {
@@ -106,7 +111,7 @@ public class Backlog {
                 System.out.println("Sprint fully completed before running out of days!");
                 break storyLoop;
             }
-            dailyBurn = story.workOnStory(dailyBurn, day);
+            dayBurn = story.workOnStory(dayBurn, day);
         }
 
         setFinishedPoints();

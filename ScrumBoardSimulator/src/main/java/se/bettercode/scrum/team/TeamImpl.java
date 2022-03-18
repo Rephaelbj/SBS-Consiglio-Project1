@@ -11,9 +11,37 @@ public class TeamImpl implements Team {
     private IntegerProperty velocity;
 
     private IntegerProperty workInProgressLimit;
+    
+    private StringProperty maturity;
+    
+    public enum MaturityLevel { BEGINNER, ESTABLISHED, EXPERT }
+    public MaturityLevel mLevel;
 
     public TeamImpl(String name, int velocity) {
         this(name, velocity, 1);
+        maturity = new SimpleStringProperty();
+        maturity.setValue("Established");
+        mLevel = MaturityLevel.ESTABLISHED; 
+    }
+    
+    public TeamImpl(String name, int velocity, String maturity) {
+        this(name, velocity, 1);
+        this.maturity = new SimpleStringProperty();
+        switch (maturity) {
+        case "Beginner":
+        	this.maturity.setValue("Beginner");
+            mLevel = MaturityLevel.BEGINNER;
+            break;
+        case "Established":
+        	this.maturity.setValue("Established");
+            mLevel = MaturityLevel.ESTABLISHED;
+            break;
+        case "Expert":
+        	this.maturity.setValue("Expert");
+            mLevel = MaturityLevel.EXPERT;
+            break;
+        }
+         
     }
 
     public TeamImpl(String name, int velocity, int workInProgressLimit) {
@@ -23,6 +51,9 @@ public class TeamImpl implements Team {
         this.name = new SimpleStringProperty(name);
         this.velocity = new SimpleIntegerProperty(velocity);
         this.workInProgressLimit = new SimpleIntegerProperty(workInProgressLimit);
+        maturity = new SimpleStringProperty();
+        maturity.setValue("Established");
+        mLevel = MaturityLevel.ESTABLISHED; 
     }
 
     @Override
@@ -67,5 +98,40 @@ public class TeamImpl implements Team {
                 ", velocity=" + velocity.get() +
                 ", WIP limit=" + workInProgressLimit.get() +
                 '}';
+    }
+    
+    @Override
+    public void setMaturity(String m) {
+    	switch (m) {
+	    	case "Beginner":
+	    		maturity.set("Beginner");
+	    		mLevel = MaturityLevel.BEGINNER;
+	    		break;
+	    	case "Established":
+	    		maturity.set("Established");
+	    		mLevel = MaturityLevel.ESTABLISHED;
+	    		break;
+	    	case "Expert":
+	    		maturity.set("Expert");
+	    		mLevel = MaturityLevel.EXPERT;
+	    		break;
+    	}
+    	System.out.println("Team: " + name.getValue() + " maturity level set to " + m + "!");
+    }
+    
+    @Override
+    public final StringProperty maturityProperty() {
+    	switch (mLevel) {
+	    	case BEGINNER:
+	    		maturity.set("Beginner");
+	    		break;
+	    	case ESTABLISHED:
+	    		maturity.set("Established");
+	    		break;
+	    	case EXPERT:
+	    		maturity.set("Expert");
+	    		break; 	
+    	}
+    	return this.maturity;
     }
 }

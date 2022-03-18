@@ -10,7 +10,6 @@ public class SelectableTeams extends Selectable<Team> {
         readTeams();
     }
 
-
     public void readTeams() throws FileNotFoundException {
         // Check if Folder exist
         String path = System.getProperty("user.home") + "/Desktop/SBS Program/Teams.txt";
@@ -25,8 +24,14 @@ public class SelectableTeams extends Selectable<Team> {
                 while((input = reader.readLine()) != null)
                 {
                     String[] values = input.split("\\|");
-                    Team newTeam = new TeamImpl(values[0], Integer.parseInt((values[1])));
-                    put(newTeam.getName(), newTeam);
+                    if (values.length >= 3) {
+                    	Team newTeam = new TeamImpl(values[0], Integer.parseInt(values[1]), values[2]);
+                        put(newTeam.getName(), newTeam);
+                    } else {
+                    	Team newTeam = new TeamImpl(values[0], Integer.parseInt(values[1]));
+                        put(newTeam.getName(), newTeam);
+                    }
+                    
                 }
             } else {
                 if(!file1.exists())
@@ -65,7 +70,7 @@ public class SelectableTeams extends Selectable<Team> {
             if (file.exists()) {
                 FileOutputStream fs = new FileOutputStream(file,true);
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fs));
-                writer.write(team.getName()+ "|" + team.velocityProperty().get()+"\n");
+                writer.write(team.getName()+ "|" + team.velocityProperty().get() + "|" + team.maturityProperty().getValue() + "\n");
                 writer.close();
             } else {
                 if(!file1.exists())
@@ -84,5 +89,10 @@ public class SelectableTeams extends Selectable<Team> {
         }
 
     }
-
+    
+    @Override
+    public void deleteTeam(String key) {
+    	super.deleteTeam(key);
+    }
+    
 }

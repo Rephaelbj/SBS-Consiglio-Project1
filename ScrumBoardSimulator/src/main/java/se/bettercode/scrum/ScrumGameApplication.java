@@ -13,22 +13,21 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import se.bettercode.scrum.backlog.Backlog;
+import se.bettercode.scrum.backlog.CustomSlicedBacklog;
 import se.bettercode.scrum.backlog.SelectableBacklogs;
 import se.bettercode.scrum.gui.*;
 import se.bettercode.scrum.prefs.StageUserPrefs;
 import se.bettercode.scrum.team.SelectableTeams;
 import se.bettercode.scrum.team.Team;
-import se.bettercode.taiga.TaigaContainer;
 
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 
 public class ScrumGameApplication extends Application {
+
 
     private static final int SPRINT_LENGTH_IN_DAYS = 10;
 
@@ -36,18 +35,17 @@ public class ScrumGameApplication extends Application {
     private Sprint sprint;
     private Team team;
     private Backlog backlog;
-    private String chart;
     private StatusBar statusBar = new StatusBar();
-    private SelectableBacklogs backlogs = new SelectableBacklogs();
-    private SelectableTeams teams = new SelectableTeams();
-    private ToolBar toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
-    private BurnupChart burnupChart = getNewBurnupChart();
+    private SelectableBacklogs backlogs;
+    private SelectableTeams teams;
+    private ToolBar toolBar;
+    private BurnupChart burnupChart;
     private Stage primaryStage;
     private StageUserPrefs prefs;
 
     public ScrumGameApplication() throws FileNotFoundException {
     }
-    
+
     public static void main(String[] args) {
         System.out.println("Launching JavaFX application.");
         launch(args);
@@ -56,32 +54,42 @@ public class ScrumGameApplication extends Application {
     @Override
     public void init() {
         System.out.println("Inside init()");
+
+        board = new Board();
+        statusBar = new StatusBar();
+        backlogs = new SelectableBacklogs();
+        try {
+            teams = new SelectableTeams();
+        } catch (FileNotFoundException e) {
+        }
+        toolBar = new ToolBar(teams.getKeys(), backlogs.getKeys());
+        burnupChart = getNewBurnupChart();
         //TODO: set up the reading of a property file to change existing settings of the application
-        try{
+        try {
             String audioSetting = "";
             String taskSetting = "";
             String windowSetting = "";
             String borderSetting = "";
             BufferedReader properties = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/properties.txt")));
-            for(String option = ""; option != null; option = properties.readLine()){
-                if(!option.contains("//") && !option.equals("")){
-                    if(option.contains("Audio")){
+            for (String option = ""; option != null; option = properties.readLine()) {
+                if (!option.contains("//") && !option.equals("")) {
+                    if (option.contains("Audio")) {
                         audioSetting = option.substring(7);
                         System.out.println(audioSetting);
-                    }else if(option.contains("TaskColor")){
+                    } else if (option.contains("TaskColor")) {
                         taskSetting = option.substring(11);
                         System.out.println(taskSetting);
-                    }else if(option.contains("WindowColor")){
+                    } else if (option.contains("WindowColor")) {
                         windowSetting = option.substring(13);
                         System.out.println(windowSetting);
-                    }else if(option.contains("BorderColor")){
-                       borderSetting = option.substring(13);
+                    } else if (option.contains("BorderColor")) {
+                        borderSetting = option.substring(13);
                         System.out.println(borderSetting);
                     }
                 }
             }
             board = new Board(audioSetting, taskSetting);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.toString());
         }
 
@@ -93,20 +101,9 @@ public class ScrumGameApplication extends Application {
         this.primaryStage = primaryStage;
         prefs = new StageUserPrefs(primaryStage);
         prefs.load();
-        setStage();
         bindActionsToToolBar();
+        setStage();
         primaryStage.show();
-        TaigaContainer taiga = new TaigaContainer();
-        System.out.println(primaryStage.isShowing());
-        try {
-            taiga.login("rbjacks3@asu.edu", "BootyButtCheeks69");
-           // taiga.setProject("rbjacks3-ser515-groupproject-7");
-           // taiga.getData();
-        }
-        catch(IOException e)
-        {
-            System.out.println("OH NO");
-        }
     }
 
     private void setStage() {
@@ -129,13 +126,31 @@ public class ScrumGameApplication extends Application {
     }
 
 
-    private MenuBar makeMenus()
-    {
+    private MenuBar makeMenus() {
         // File menu
         Menu fileMenu = new Menu("File");
         MenuItem fItem1 = new MenuItem("Save");
         MenuItem fItem2 = new MenuItem("Load");
         MenuItem fItem3 = new MenuItem("Import from Taiga");
+        fItem3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+
+                TaigaWindow taigaWindow = new TaigaWindow(backlogs, teams);
+                taigaWindow.setStage(stage);
+                Scene scene = new Scene(taigaWindow, 400, 300);
+                stage.setScene(scene);
+                stage.setTitle("Taiga Import");
+                stage.show();
+                stage.setOnCloseRequest(e -> {
+                    if (taigaWindow.getBacklog() != null && taigaWindow.getBacklog().getTotalPoints() > 0) {
+                        backlog = taigaWindow.getBacklog();
+                        loadData();
+                    }
+                });
+            }
+        });
         MenuItem fItem4 = new MenuItem("Export to Taiga");
         MenuItem fItem5 = new MenuItem("Settings");
         fItem5.setOnAction(new EventHandler<ActionEvent>() {
@@ -153,7 +168,7 @@ public class ScrumGameApplication extends Application {
             }
         });
         MenuItem fItem6 = new MenuItem("Exit");
-        fileMenu.getItems().addAll(fItem1,fItem2,fItem3,fItem4,fItem5,fItem6);
+        fileMenu.getItems().addAll(fItem1, fItem2, fItem3, fItem4, fItem5, fItem6);
 
         // Team menu
         //Strategy menu
@@ -183,7 +198,7 @@ public class ScrumGameApplication extends Application {
         tItem2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(team != null) {
+                if (team != null) {
                     Stage stage = new Stage();
                     EditTeamWindow editTeam = new EditTeamWindow(team);
                     editTeam.setStage(stage);
@@ -194,12 +209,22 @@ public class ScrumGameApplication extends Application {
                     stage.setScene(scene);
                     stage.setTitle("Edit Team");
                     stage.setResizable(false);
-                    stage.show();                }
+                    stage.show();
+                }
 
             }
         });
         MenuItem tItem3 = new MenuItem("Delete");
-        teamMenu.getItems().addAll(tItem1,tItem2,tItem3);
+        tItem3.setOnAction(e -> {
+        	System.out.println("Deleting team " + team.getName());
+        	teams.deleteTeam(team.getName());
+        	primaryStage.close();
+            team = null;
+            backlog = null;
+            this.init();
+            this.start(new Stage());
+        });
+        teamMenu.getItems().addAll(tItem1, tItem2, tItem3);
 
         //Strategy menu
         Menu strategyMenu = new Menu("Strategy");
@@ -226,8 +251,44 @@ public class ScrumGameApplication extends Application {
         });
         MenuItem sItem2 = new MenuItem("Edit");
         MenuItem sItem3 = new MenuItem("Delete");
-        strategyMenu.getItems().addAll(sItem1,sItem2,sItem3);
+        sItem3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(toolBar.getStrategy() != null)
+                {
+                    CustomSlicedBacklog custom = new CustomSlicedBacklog();
+                    custom.setName(toolBar.getStrategy());
+                    backlogs.delete(custom);
+                    toolBar.setStrategies(backlogs.getKeys());
 
+                }
+            }
+        });
+        strategyMenu.getItems().addAll(sItem1, sItem2, sItem3);
+
+
+        //Story menu
+        Menu storyMenu = new Menu("User Story");
+        MenuItem stItem1 = new MenuItem("Add");
+        Application app = this;
+        stItem1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = new Stage();
+                NewStoryWindow newStoryWindow = new NewStoryWindow();
+                newStoryWindow.setStage(stage);
+                newStoryWindow.setAlignment(Pos.CENTER);
+                newStoryWindow.setHgap(10);
+                newStoryWindow.setVgap(10);
+                newStoryWindow.setApp(app);
+                Scene scene = new Scene(newStoryWindow, 700, 500);
+                stage.setScene(scene);
+                stage.setTitle("Add User Story");
+                stage.setResizable(false);
+                stage.show();
+            }
+        });
+        storyMenu.getItems().addAll(stItem1);
 
         MenuBar menuBar = new MenuBar();
 
@@ -235,9 +296,11 @@ public class ScrumGameApplication extends Application {
         menuBar.getMenus().add(fileMenu);
         menuBar.getMenus().add(teamMenu);
         menuBar.getMenus().add(strategyMenu);
+        menuBar.getMenus().add(storyMenu);
         return menuBar;
 
     }
+
     private boolean initSprint() {
         if (team != null && backlog != null) {
             sprint = new Sprint("First sprint", SPRINT_LENGTH_IN_DAYS, team, backlog);
@@ -257,13 +320,14 @@ public class ScrumGameApplication extends Application {
         statusBar.bindDaysInSprint(sprint.lengthInDaysProperty());
         statusBar.bindCurrentDay(sprint.currentDayProperty());
         statusBar.bindLeadTime(backlog.averageLeadTimeProperty());
+        statusBar.bindMaturityLevel(team.maturityProperty());
     }
 
     private void bindActionsToToolBar() {
         ChangeListener backlogChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(newValue != null) {
+                if (newValue != null) {
                     backlog = backlogs.get(newValue.toString());
                     loadData();
                 }
@@ -273,7 +337,7 @@ public class ScrumGameApplication extends Application {
         ChangeListener teamChoiceBoxListener = new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                if(newValue != null) {
+                if (newValue != null) {
                     team = teams.get(newValue.toString());
                     loadData();
                 }
@@ -284,6 +348,19 @@ public class ScrumGameApplication extends Application {
         toolBar.setBacklogChoiceBoxListener(backlogChoiceBoxListener);
         toolBar.setBurnUpButtonAction((event) -> ChartWindow.display(burnupChart));
         toolBar.setStartButtonAction((event) -> sprint.runSprint());
+
+        toolBar.setResetGameButtonAction((event) -> {
+            resetApp();
+        });
+    }
+
+    public void resetApp()
+    {
+        primaryStage.close();
+        team = null;
+        backlog = null;
+        this.init();
+        this.start(new Stage());
     }
 
     private void loadData() {
@@ -297,7 +374,9 @@ public class ScrumGameApplication extends Application {
         prefs.save();
     }
 
+
     private BurnupChart getNewBurnupChart() {
         return new BurnupChart(SPRINT_LENGTH_IN_DAYS, false);
     }
+
 }

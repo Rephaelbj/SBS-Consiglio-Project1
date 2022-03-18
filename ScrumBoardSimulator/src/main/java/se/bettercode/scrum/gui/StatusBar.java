@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
 
+
 import static javafx.beans.binding.Bindings.convert;
 
 public class StatusBar extends HBox {
@@ -21,6 +22,7 @@ public class StatusBar extends HBox {
     private Label leadTimeLabel = new Label();
     private ProgressBar progressBar = new ProgressBar(0.0);
     private IntegerProperty daysInSprint;
+    private Label maturityLevelLabel = new Label();
 
 
     public StatusBar() {
@@ -32,7 +34,8 @@ public class StatusBar extends HBox {
                              new Label("Story points done: "), storyPointsDoneLabel,
                              new Label("Avg lead time: "), leadTimeLabel,
                              new Label("Day: "), currentDayLabel,
-                             progressBar);
+                             progressBar,
+                             new Label("Maturity level: "), maturityLevelLabel);
     }
 
     public void bindTeamName(StringProperty teamName) {
@@ -64,5 +67,13 @@ public class StatusBar extends HBox {
 
     public void bindLeadTime(DoubleProperty leadTime) {
         leadTimeLabel.textProperty().bind(convert(leadTime));
+    }
+    
+    public void bindMaturityLevel(StringProperty maturity) {
+    	maturityLevelLabel.textProperty().bind(maturity);
+    }
+    
+    public Label getMaturityLevelLabel() {
+    	return maturityLevelLabel;
     }
 }
